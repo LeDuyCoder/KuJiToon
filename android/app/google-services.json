@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "211503743534",
+    "project_id": "kujitoon",
+    "storage_bucket": "kujitoon.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211503743534:android:0d9a1d3ce81460767095bf",
+        "android_client_info": {
+          "package_name": "duykr.studio.kujitoon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL99C-EG2CunuWbEiKYASfmLjiW-vg_7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
