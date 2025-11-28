@@ -39,6 +39,10 @@ class _SplashScreen extends State<SplashScreen> with SingleTickerProviderStateMi
           if(state is SplashLoading){
             _controller.forward();
           }
+
+          if(state is SplashSuccess){
+            Navigator.pushReplacementNamed(context, '/loginMobile');
+          }
         },
         builder: (context, state){
           if(state is SplashInitial || state is SplashLoading){
