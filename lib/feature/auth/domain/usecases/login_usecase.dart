@@ -1,4 +1,4 @@
-import 'package:kujitoon/feature/auth/domain/entities/user_entity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kujitoon/feature/auth/domain/repositories/auth_repository.dart';
 
 class LoginUsecase {
@@ -6,7 +6,7 @@ class LoginUsecase {
 
   LoginUsecase({required this.repository});
 
-  Future<UserEntity?> call(String email, String password){
+  Future<User?> call(String email, String password){
     return repository.login(email, password);
   }
 }
