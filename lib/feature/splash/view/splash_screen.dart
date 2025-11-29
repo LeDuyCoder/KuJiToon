@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/feature/splash/bloc/splash_bloc.dart';
@@ -38,6 +39,14 @@ class _SplashScreen extends State<SplashScreen> with SingleTickerProviderStateMi
         listener: (context, state){
           if(state is SplashLoading){
             _controller.forward();
+          }
+
+          if(state is SplashSuccess){
+            if (kIsWeb) {
+              Navigator.pushReplacementNamed(context, '/login');
+            }else{
+              Navigator.pushReplacementNamed(context, '/loginMobile');
+            }
           }
         },
         builder: (context, state){

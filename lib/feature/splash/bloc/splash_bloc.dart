@@ -12,15 +12,13 @@ class SplashBloc extends Bloc<SplashEvent, SplashState>{
   Future<void> _onAppStarted(AppStarted event, Emitter<SplashState> emit) async {
     emit(SplashLoading());
 
-    // await Future.delayed(Duration(seconds: 3));
-    //handle loading
+    await Future.delayed(Duration(seconds: 3));
+    bool isLoggedIn = true;
 
-    // bool isLoggedIn = true;
-    //
-    // if(isLoggedIn){
-    //   emit(SplashSuccess());
-    // }else{
-    //   emit(SplashFailure());
-    // }
+    if(isLoggedIn){
+      emit(SplashSuccess());
+    }else{
+      emit(SplashFailure());
+    }
   }
 }
