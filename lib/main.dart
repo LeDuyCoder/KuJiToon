@@ -6,7 +6,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kujitoon/feature/register/data/datasources/register_remote_datasource.dart';
+import 'package:kujitoon/feature/register/data/repositories/register_repository_impl.dart';
+import 'package:kujitoon/feature/register/domain/repositories/register_reository.dart';
+import 'package:kujitoon/feature/register/domain/usecases/register_usecase.dart';
+import 'package:kujitoon/feature/register/view/mobile/pages/register_page.dart';
 
+import 'feature/register/bloc/register_bloc.dart';
 import 'firebase_options.dart';
 import 'core/utils/app_snackbar.dart';
 
@@ -28,15 +34,19 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> setup() async {
   // Datasource
   sl.registerLazySingleton(() => AuthRemoteDatasource(FirebaseAuth.instance));
+  sl.registerLazySingleton(() => RegisterRemoteDatasource(auth: FirebaseAuth.instance));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerLazySingleton<RegisterReository>(() => RegisterRepositoryImpl(remote: sl()));
 
   // UseCase
   sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
+  sl.registerLazySingleton(() => RegisterUsecase(repository: sl()));
 
   // Bloc
   sl.registerFactory(() => AuthBloc(loginUseCase: sl()));
+  sl.registerFactory(() => RegisterBloc(registerUsecase: sl()));
 }
 
 Future<void> main() async {
@@ -66,6 +76,11 @@ class MyApp extends StatelessWidget {
         '/loginMobile': (context) => BlocProvider(
           create: (_) => sl<AuthBloc>(),
           child: LoginPage(),
+        ),
+
+        '/registerMobile': (context) => BlocProvider(
+          create: (_) => sl<RegisterBloc>(),
+          child: RegisterPage(),
         ),
 
         '/login': (context) => BlocProvider(

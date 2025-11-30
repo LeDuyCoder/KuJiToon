@@ -6,8 +6,6 @@ class AuthRemoteDatasource {
   AuthRemoteDatasource(this.auth);
 
   Future<User?> login(String email, String password) async {
-    print(email);
-    print(password);
     final credential = await auth.signInWithEmailAndPassword(email: email, password: password);
     final user = credential.user;
     return user;

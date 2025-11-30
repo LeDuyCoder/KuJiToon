@@ -81,12 +81,12 @@ class _LoginPage extends State<LoginPage> {
                         children: [
                           Container(
                             width: boxWidth * 0.5,
-                            height: 500,
+                            height: 550,
                             child: HeaderWidget(borderRadiusGeometry: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),),
                           ),
                           Container(
                             width: boxWidth * 0.5,
-                            height: 500,
+                            height: 550,
                             color: Colors.white,
                             child: Padding(
                               padding: EdgeInsets.all(15),

@@ -111,6 +111,22 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                         child: Text("Đăng Nhập", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Chưa có tài khoảng?"),
+                      SizedBox(width: 5,),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacementNamed(context, '/registerMobile');
+                        },
+                        child: Text("Đăng Kí", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   )
                 ],
               ),
