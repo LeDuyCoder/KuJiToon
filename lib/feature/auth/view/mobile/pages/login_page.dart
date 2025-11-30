@@ -92,6 +92,10 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                   SizedBox(height: 40,),
                   GestureDetector(
                     onTap: (){
+                      if(state is AuthHandling){
+                        return;
+                      }
+
                       var email = emailTextEditing.text;
                       var password = passwordTextEditing.text;
                       if(email.isEmpty || password.isEmpty){
@@ -108,7 +112,13 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                           borderRadius: BorderRadius.circular(10)
                       ),
                       child: Center(
-                        child: Text("Đăng Nhập", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                        child: state is AuthHandling
+                            ? Container(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(color: Colors.white,),
+                        )
+                            : Text("Đăng Kí", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                       ),
                     ),
                   ),
