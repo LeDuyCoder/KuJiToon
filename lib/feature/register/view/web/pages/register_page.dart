@@ -59,9 +59,7 @@ class _RegisterPage extends State<RegisterPage>{
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
 
-    return BlocProvider(
-      create: (_) => sl<RegisterBloc>(),
-      child: BlocConsumer<RegisterBloc, RegisterState>(
+    return BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state){
           if(state is RegisterSucessed){
             WebToast.showSuccess("Đăng kí thành công");
@@ -110,19 +108,19 @@ class _RegisterPage extends State<RegisterPage>{
                               width: boxWidth * 0.5,
                               height: 700,
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)
                               ),
                               child: Padding(
                                 padding: EdgeInsets.all(15),
                                 child: FormWidget(
-                                    emailTextEditing: emailEditing,
-                                    passwordTextEditing: passwordEditing,
-                                    userNameTextEditing: userNameEditing,
-                                    errorMesage: messageError,
-                                    funcLogin: (agreePolicy){
-                                      register(agreePolicy, state);
-                                    },
+                                  emailTextEditing: emailEditing,
+                                  passwordTextEditing: passwordEditing,
+                                  userNameTextEditing: userNameEditing,
+                                  errorMesage: messageError,
+                                  funcLogin: (agreePolicy){
+                                    register(agreePolicy, state);
+                                  }, state: state,
                                 ),
                               ),
                             ),
@@ -151,7 +149,7 @@ class _RegisterPage extends State<RegisterPage>{
                                   errorMesage: messageError,
                                   funcLogin: (agreePolicy){
                                     register(agreePolicy, state);
-                                  },
+                                  }, state: state,
                                 ),
                               ),
                             ),
@@ -165,7 +163,6 @@ class _RegisterPage extends State<RegisterPage>{
             ),
           );
         }
-      ),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
 import 'package:kujitoon/feature/register/view/mobile/widgets/strong_password_widget.dart';
 
 class FormWidget extends StatefulWidget{
@@ -7,10 +8,11 @@ class FormWidget extends StatefulWidget{
   final TextEditingController emailTextEditing;
   final TextEditingController passwordTextEditing;
   final TextEditingController userNameTextEditing;
+  final RegisterState state;
   final String? errorMesage;
   final Function(bool agreePolicy) funcLogin;
 
-  FormWidget({super.key, required this.emailTextEditing, required this.passwordTextEditing, required this.funcLogin, required this.userNameTextEditing, required this.errorMesage});
+  FormWidget({super.key, required this.emailTextEditing, required this.passwordTextEditing, required this.funcLogin, required this.userNameTextEditing, required this.errorMesage, required this.state});
 
   @override
   State<StatefulWidget> createState() => _FormWidget();
@@ -231,6 +233,9 @@ class _FormWidget extends State<FormWidget>{
           SizedBox(height: 20,),
           GestureDetector(
             onTap: (){
+              if(widget.state is RegisterHandling){
+                return;
+              }
               widget.funcLogin(agreePolicy);
             },
             child: Container(
@@ -241,7 +246,13 @@ class _FormWidget extends State<FormWidget>{
                   borderRadius: BorderRadius.circular(10)
               ),
               child: Center(
-                child: Text("Đăng Kí", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                child: widget.state is RegisterHandling
+                    ? Container(
+                  width: 30,
+                  height: 30,
+                  child: CircularProgressIndicator(color: Colors.white,),
+                )
+                    : Text("Đăng Kí", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
               ),
             ),
           ),
