@@ -1,5 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kujitoon/core/routes/fade_route.dart';
+import 'package:kujitoon/feature/auth/bloc/auth_bloc.dart';
+import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
+import 'package:kujitoon/main.dart';
+
+import '../../../../register/view/web/pages/register_page.dart';
+import '../../../../register/view/web/pages/register_page.dart' as webRegister;
+import '../pages/login_page.dart';
+import '../pages/login_page.dart' as webAuth;
 
 class FormWidget extends StatefulWidget{
 
@@ -18,6 +28,26 @@ class FormWidget extends StatefulWidget{
 class _FormWidget extends State<FormWidget>{
 
   bool rememberPassword = false;
+
+  void pushWithFade(BuildContext context, String route) {
+    Widget page = switch (route) {
+      '/register' => BlocProvider(
+        create: (_) => sl<RegisterBloc>(),
+        child: webRegister.RegisterPage(),
+      ),
+      '/login' => BlocProvider(
+        create: (_) => sl<AuthBloc>(),
+        child: webAuth.LoginPage(),
+      ),
+      _ => const SizedBox(),
+    };
+
+    Navigator.push(
+      context,
+      FadeRoute(page: page),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +222,7 @@ class _FormWidget extends State<FormWidget>{
               SizedBox(width: 5,),
               GestureDetector(
                 onTap: (){
-                  Navigator.pushReplacementNamed(context, '/registerMobile');
+                  pushWithFade(context, '/register');
                 },
                 child: Text("Đăng Kí", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
               )

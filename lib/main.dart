@@ -19,7 +19,8 @@ import 'core/utils/app_snackbar.dart';
 // Splash + Login
 import 'feature/splash/view/splash_screen.dart';
 import 'feature/auth/view/mobile/pages/login_page.dart';
-import 'feature/auth/view/web/pages/login_page.dart' as web;
+import 'feature/auth/view/web/pages/login_page.dart' as webAuth;
+import 'feature/register/view/web/pages/register_page.dart' as webRegister;
 
 // Clean Architecture layers
 import 'feature/auth/bloc/auth_bloc.dart';
@@ -71,6 +72,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
       initialRoute: "/splash",
       routes: {
+        //========/ Mobile /=========//
+
         '/splash': (context) => SplashScreen(),
 
         '/loginMobile': (context) => BlocProvider(
@@ -83,10 +86,17 @@ class MyApp extends StatelessWidget {
           child: RegisterPage(),
         ),
 
+        //========/ Website /=========//
+
         '/login': (context) => BlocProvider(
           create: (_) => sl<AuthBloc>(),
-          child: web.LoginPage(),
+          child: webAuth.LoginPage(),
         ),
+
+        '/register': (context) => BlocProvider(
+          create: (_) => sl<RegisterBloc>(),
+          child: webRegister.RegisterPage(),
+        )
       },
     );
   }
