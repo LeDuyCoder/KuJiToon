@@ -2,11 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterRemoteDatasource {
-  final FirebaseAuth auth;
-
-  RegisterRemoteDatasource({required this.auth});
 
   Future<User?> register(String email, String password, String userName) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
     final credential = await auth.createUserWithEmailAndPassword(email: email, password: password);
     final user = credential.user;
     if(user != null){

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kujitoon/core/routes/fade_route.dart';
 import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
 import 'package:kujitoon/feature/register/view/mobile/widgets/strong_password_widget.dart';
+import 'package:kujitoon/router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FormWidget extends StatefulWidget{
 
@@ -230,7 +233,7 @@ class _FormWidget extends State<FormWidget>{
                 ],
               )
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 10,),
           GestureDetector(
             onTap: (){
               if(widget.state is RegisterHandling){
@@ -256,15 +259,21 @@ class _FormWidget extends State<FormWidget>{
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("Đã có tài khoảng?"),
               SizedBox(width: 5,),
               GestureDetector(
-                onTap: (){
-                  Navigator.pop(context);
+                onTap: () async {
+                  Navigator.pushReplacement(
+                    context,
+                    FadeRoute(
+                      settings: const RouteSettings(name: '/login'),
+                      builder: routes['/login']!,
+                    ),
+                  );
                 },
                 child: Text("Đăng Nhập", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
               )

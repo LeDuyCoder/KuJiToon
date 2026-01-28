@@ -1,5 +1,6 @@
 part of 'register_bloc.dart';
 
+// ignore: camel_case_types
 abstract class absRegisterEvent extends Equatable {
   const absRegisterEvent();
 }

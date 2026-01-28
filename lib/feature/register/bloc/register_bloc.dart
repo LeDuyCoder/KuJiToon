@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kujitoon/feature/auth/bloc/auth_bloc.dart';
 import 'package:kujitoon/feature/register/domain/usecases/register_usecase.dart';
 
 part 'register_event.dart';

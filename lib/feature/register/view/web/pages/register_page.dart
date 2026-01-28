@@ -51,7 +51,19 @@ class _RegisterPage extends State<RegisterPage>{
       return;
     }
 
+    if (!isValidEmail(email)) {
+      WebToast.showError("Email không hợp lệ");
+      return;
+    }
+
     context.read<RegisterBloc>().add(RegisterEvent(email: email, password: password, userName: userName));
+  }
+
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    );
+    return emailRegex.hasMatch(email);
   }
 
   @override
@@ -69,9 +81,9 @@ class _RegisterPage extends State<RegisterPage>{
         },
         builder: (context, state){
           return Scaffold(
-            backgroundColor: Colors.black.withAlpha(20),
+            backgroundColor: Colors.grey.shade200,
             body: Container(
-              color: Colors.black.withAlpha(20),
+              color:  Colors.grey.shade200,
               width: screenWidth,
               height: screenHeight,
               child: Center(
