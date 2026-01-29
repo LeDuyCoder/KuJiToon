@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/feature/home/bloc/home_bloc.dart';
 import 'package:kujitoon/feature/home/bloc/home_event.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/grid_commic_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/prominent_commic_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/scroll_button.dart';
+import 'package:kujitoon/feature/home/view/website/widgets/web/grid_commic_widget.dart';
 
 class MainPage extends StatelessWidget{
   final BuildContext context;
