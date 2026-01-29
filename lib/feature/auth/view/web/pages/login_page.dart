@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kujitoon/core/routes/fade_route.dart';
+import 'package:kujitoon/core/user/user_provider.dart';
 import 'package:kujitoon/core/utils/app_snackbar.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/core/utils/web_toast.dart';
 import 'package:kujitoon/feature/auth/bloc/auth_bloc.dart';
 import 'package:kujitoon/feature/auth/view/web/widget/form_widget.dart';
 import 'package:kujitoon/feature/auth/view/web/widget/header_widget.dart';
+import 'package:kujitoon/router.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -21,11 +24,8 @@ class _LoginPage extends State<LoginPage> {
   String? messageError;
 
   Future<void> login() async {
-
     var email = emailTextEditing.text;
     var password = passwordTextEditing.text;
-    print(email);
-    print(password);
     if(email.isEmpty || password.isEmpty){
       messageError = "Mail và mật khẩu không được để trống";
     }else{
@@ -43,6 +43,17 @@ class _LoginPage extends State<LoginPage> {
         listener: (context, state) {
           if(state is AuthSucessed) {
             WebToast.showSuccess("Đăng nhập thành công");
+
+            context.read<UserProvider>().loadUser(state.user.uid);
+
+            Navigator.pushReplacement(
+              context,
+              FadeRoute(
+                settings: const RouteSettings(name: '/home'),
+                builder: routes['/home']!, // 👈 lấy đúng route đã khai báo
+              ),
+            );
+
           }else if(state is AuthFailed){
             setState(() {
               messageError = state.msg;
@@ -81,12 +92,12 @@ class _LoginPage extends State<LoginPage> {
                         children: [
                           Container(
                             width: boxWidth * 0.5,
-                            height: 500,
+                            height: 550,
                             child: HeaderWidget(borderRadiusGeometry: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),),
                           ),
                           Container(
                             width: boxWidth * 0.5,
-                            height: 500,
+                            height: 550,
                             color: Colors.white,
                             child: Padding(
                               padding: EdgeInsets.all(15),

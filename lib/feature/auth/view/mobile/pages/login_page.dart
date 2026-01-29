@@ -12,10 +12,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthBloc>(),
-      child: _LoginPageContent(),
-    );
+    return _LoginPageContent();
   }
 }
 
@@ -92,6 +89,10 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                   SizedBox(height: 40,),
                   GestureDetector(
                     onTap: (){
+                      if(state is AuthHandling){
+                        return;
+                      }
+
                       var email = emailTextEditing.text;
                       var password = passwordTextEditing.text;
                       if(email.isEmpty || password.isEmpty){
@@ -108,9 +109,31 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                           borderRadius: BorderRadius.circular(10)
                       ),
                       child: Center(
-                        child: Text("Đăng Nhập", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+                        child: state is AuthHandling
+                            ? Container(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(color: Colors.white,),
+                        )
+                            : Text("Đăng Kí", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Chưa có tài khoảng?"),
+                      SizedBox(width: 5,),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacementNamed(context, '/registerMobile');
+                        },
+                        child: Text("Đăng Kí", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   )
                 ],
               ),

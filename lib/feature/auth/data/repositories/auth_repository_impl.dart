@@ -6,7 +6,7 @@ import '../../domain/repositories/auth_repository.dart';
 class AuthRepositoryImpl extends AuthRepository{
   final AuthRemoteDatasource remote;
 
-  AuthRepositoryImpl(this.remote);
+  AuthRepositoryImpl({required this.remote});
 
   @override
   Future<User?> login(String email, String password) async {

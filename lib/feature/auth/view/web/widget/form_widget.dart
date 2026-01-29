@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:kujitoon/core/routes/fade_route.dart';
+import 'package:kujitoon/router.dart';
 
 class FormWidget extends StatefulWidget{
 
@@ -183,6 +185,26 @@ class _FormWidget extends State<FormWidget>{
                 child: Text("Đăng Nhập", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
               ),
             ),
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Chưa có tài khoảng?"),
+              SizedBox(width: 5,),
+              GestureDetector(
+                onTap: () async {
+                  Navigator.pushReplacement(
+                    context,
+                    FadeRoute(
+                      settings: const RouteSettings(name: '/register'),
+                      builder: routes['/register']!, // 👈 lấy đúng route đã khai báo
+                    ),
+                  );
+                },
+                child: Text("Đăng Kí", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+              )
+            ],
           )
         ],
       ),
