@@ -9,11 +9,11 @@ extension StatusEnumExt on StatusEnum {
   String get value {
     switch (this) {
       case StatusEnum.ongoing:
-        return 'ongoing';
+        return 'Đang Cập Nhật';
       case StatusEnum.completed:
-        return 'completed';
+        return 'Hoàn Thành';
       case StatusEnum.pending:
-        return 'pending';
+        return 'Đang Cập Nhật';
     }
   }
 

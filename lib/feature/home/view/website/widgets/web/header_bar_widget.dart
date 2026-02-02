@@ -9,8 +9,6 @@ import 'package:kujitoon/core/utils/responsive.dart';
 class HeaderBarWidget extends StatelessWidget{
   const HeaderBarWidget({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(

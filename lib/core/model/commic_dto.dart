@@ -9,6 +9,7 @@ class CommicDTO {
   final StatusEnum _status;
   final DateTime _createdAt;
 
+
   CommicDTO({
     required String slug,
     required String title,
@@ -24,6 +25,7 @@ class CommicDTO {
         _tags = tags,
         _status = status,
         _createdAt = createdAt;
+
 
   DateTime get createdAt => _createdAt;
 
