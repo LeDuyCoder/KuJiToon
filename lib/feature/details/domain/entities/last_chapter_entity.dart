@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
-
-class LastChapterDto {
+class LastChapterEntity {
   final String _name;
   final String _chapterTitle;
   final String _fileName;
   final String _chapterApiData;
   final bool _isRead;
 
-  LastChapterDto({
+  LastChapterEntity({
     required String name,
     required String chapterTitle,
     required String fileName,
@@ -31,7 +29,7 @@ class LastChapterDto {
       'chapterTitle': _chapterTitle,
       'fileName': _fileName,
       'chapterApiData': _chapterApiData,
-      'isRead': _isRead,
+      'isRead': _isRead
     };
   }
 }

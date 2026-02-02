@@ -40,6 +40,7 @@ class AllCommicService extends BaseService<AllCommicDto?, int>{
                   chapterTitle: chapter['chapter_title'] ?? '',
                   fileName: chapter['filename'] ?? '',
                   chapterApiData: chapter['chapter_api_data'] ?? '',
+                  isRead: false
                 );
               }).toList(),
             ),

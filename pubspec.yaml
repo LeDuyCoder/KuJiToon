@@ -55,6 +55,7 @@ dependencies:
   url_launcher: ^6.3.2
   equatable: ^2.0.7
   provider: ^6.1.5+1
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -80,7 +81,7 @@ flutter:
   assets:
     - assets/
     - assets/img/
-
+    - assets/img/mascot/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

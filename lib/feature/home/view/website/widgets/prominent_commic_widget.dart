@@ -13,7 +13,13 @@ class ProminentCommicWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return HoverableWidget(
-      onTap: (){},
+      onTap: (){
+        Navigator.pushNamed(
+          context,
+          '/detail',
+          arguments: prominentCommic.slug,
+        );
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Stack(

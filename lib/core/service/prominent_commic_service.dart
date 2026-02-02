@@ -37,6 +37,7 @@ class ProminentCommicService extends BaseService<List<ProminentCommicDto>, Null>
                   chapterTitle: chapter['chapter_title'] ?? '',
                   fileName: chapter['filename'] ?? '',
                   chapterApiData: chapter['chapter_api_data'] ?? '',
+                  isRead: false,
                 );
               }).toList(),
             ),
