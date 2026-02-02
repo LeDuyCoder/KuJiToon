@@ -6,6 +6,7 @@ import 'package:kujitoon/feature/home/bloc/home_bloc.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
 import 'package:kujitoon/feature/home/view/website/pages/mobile_home_page.dart';
 import 'package:kujitoon/feature/home/view/website/pages/web_home_page.dart';
+import 'package:kujitoon/feature/loading/view/widgets/loading_widget.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({super.key});
@@ -23,8 +24,8 @@ class _HomePage extends State<HomePage>{
       listener: (context, state){},
       builder: (context, state){
         if(state is LoadingHomeState){
-          return Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            body: LoadingWidget(imageAsset: "assets/img/mascot/pic2.png"),
           );
         }
 
