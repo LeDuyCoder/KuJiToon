@@ -5,14 +5,16 @@ import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dar
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_chapters_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_information_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_overview_card_widget.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/footer_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/mobile/header_bar_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/menu_widget.dart';
+import 'package:kujitoon/feature/shared_header/view/widgets/header_widget.dart';
 
 class MobileDetailPage extends StatefulWidget{
   final DetailCommicEntity detailCommicEntity;
+  final UserEntity userEntity;
 
-  const MobileDetailPage({super.key, required this.detailCommicEntity});
+  const MobileDetailPage({super.key, required this.detailCommicEntity, required this.userEntity});
 
   @override
   State<StatefulWidget> createState() => _MobileDetailPage();
@@ -48,7 +50,8 @@ class _MobileDetailPage extends State<MobileDetailPage>{
                     setState(() {
                       selectedSort = value??'new';
                     });
-                  }),
+                  }, originLastChapters: widget.detailCommicEntity.chapters.toList(),
+                    detailCommicEntity: widget.detailCommicEntity,),
                   SizedBox(height: 40,),
                   FooterWidget()
                 ],
@@ -57,21 +60,14 @@ class _MobileDetailPage extends State<MobileDetailPage>{
           ),
           Column(
             children: [
-              HeaderBarWidget(
-                openMenu: (bool opened) {
-                  setState(() {
-                    isOpenMenu = opened;
-                  });
-                },
-                isOpenMenu: isOpenMenu,
-              ),
+              HeaderWidget(),
               if(isOpenMenu)
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                   height: isOpenMenu ? 250 : 0,
                   child: ClipRect(
-                    child: MenuWidget(changePage: (String page) {},),
+                    child: MenuWidget(changePage: (String page) {}, userEntity: widget.userEntity,),
                   ),
                 ),
             ],

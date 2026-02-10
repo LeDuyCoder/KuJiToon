@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
 import 'package:kujitoon/feature/home/domain/entities/prominent_commic.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
 
 class ProminentCommicWidget extends StatelessWidget{
   final ProminentCommic prominentCommic;
+  final UserEntity userEntity;
 
-  const ProminentCommicWidget({super.key, required this.prominentCommic});
+  const ProminentCommicWidget({super.key, required this.prominentCommic, required this.userEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,10 @@ class ProminentCommicWidget extends StatelessWidget{
         Navigator.pushNamed(
           context,
           '/detail',
-          arguments: prominentCommic.slug,
+          arguments: {
+            "slug": prominentCommic.slug,
+            "userEntity": userEntity
+          },
         );
       },
       child: ClipRRect(

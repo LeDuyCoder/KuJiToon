@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/feature/home/domain/entities/last_update_commic.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
 
 class LatesCommicWidget extends StatelessWidget {
   final LastUpdateCommic lastUpdateCommic;
+  final UserEntity userEntity;
 
-  const LatesCommicWidget({super.key, required this.lastUpdateCommic});
+  const LatesCommicWidget({super.key, required this.lastUpdateCommic, required this.userEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,10 @@ class LatesCommicWidget extends StatelessWidget {
         Navigator.pushNamed(
           context,
           '/detail',
-          arguments: lastUpdateCommic.slug,
+          arguments: {
+            "slug": lastUpdateCommic.slug,
+            "userEntity": userEntity
+          },
         );
       },
       child: ClipRRect(

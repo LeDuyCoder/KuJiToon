@@ -20,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState>{
     try{
       final user = await loginUseCase.call(event.email, event.password);
       if(user != null){
+        await loginUseCase.setSessionLogin(user.uid);
         emit(AuthSucessed(user));
       }else{
         emit(AuthFailed("email hoặc mật khẩu không đúng"));

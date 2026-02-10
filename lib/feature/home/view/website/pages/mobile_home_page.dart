@@ -1,18 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/feature/home/bloc/home_bloc.dart';
-import 'package:kujitoon/feature/home/bloc/home_event.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
 import 'package:kujitoon/feature/home/view/website/pages/home_page.dart';
 import 'package:kujitoon/feature/home/view/website/pages/mobile_main_page.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/mobile/footer_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/mobile/grid_commic_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/mobile/header_bar_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/menu_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/prominent_commic_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/scroll_button.dart';
+import 'package:kujitoon/feature/shared_header/view/widgets/header_widget.dart';
 
 class MobileHomePage extends StatefulWidget{
   final LoadedHomeState state;
@@ -41,13 +33,11 @@ class _MobileHomePage extends State<MobileHomePage>{
             MainPage(state: widget.state),
           Column(
             children: [
-              HeaderBarWidget(
-                openMenu: (bool opened) {
-                  setState(() {
-                    widget.isOpenMenu = opened;
-                  });
-                }, isOpenMenu: widget.isOpenMenu,
-              ),
+              HeaderWidget(isOpeneMenu: widget.isOpenMenu, openMenu: (opened){
+                setState(() {
+                  widget.isOpenMenu = opened;
+                });
+              },),
               if(widget.isOpenMenu)
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
@@ -58,7 +48,7 @@ class _MobileHomePage extends State<MobileHomePage>{
                       setState(() {
                         HomePage.PAGE = page;
                       });
-                    },),
+                    }, userEntity: widget.state.dataEntity.userEntity,),
                   ),
                 ),
             ],

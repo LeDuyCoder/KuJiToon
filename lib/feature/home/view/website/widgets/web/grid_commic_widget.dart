@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kujitoon/feature/home/domain/entities/last_update_commic.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/lates_commic_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/pagination_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/prominent_commic_widget.dart';
 
 class GridCommicWidget extends StatefulWidget{
+  final UserEntity userEntity;
   final List<LastUpdateCommic> lastUpdateCommics;
   final int totalPages;
   final int currentPage;
   final Function(int) onPageChanged;
 
-  GridCommicWidget({super.key, required this.totalPages, required this.onPageChanged, required this.lastUpdateCommics, required this.currentPage});
+  GridCommicWidget({super.key, required this.totalPages, required this.onPageChanged, required this.lastUpdateCommics, required this.currentPage, required this.userEntity});
 
   @override
   State<StatefulWidget> createState() => _GridCommicWidgetState();
@@ -35,7 +37,7 @@ class _GridCommicWidgetState extends State<GridCommicWidget> {
             ),
             itemBuilder: (context, index) {
               final commic = widget.lastUpdateCommics[index];
-              return LatesCommicWidget(lastUpdateCommic: commic);
+              return LatesCommicWidget(lastUpdateCommic: commic, userEntity: widget.userEntity,);
             },
           ),
           PaginationWidget(

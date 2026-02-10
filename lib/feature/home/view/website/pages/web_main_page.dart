@@ -85,6 +85,7 @@ class MainPage extends StatelessWidget{
                                     alignment: Alignment.topCenter,
                                     child: ProminentCommicWidget(
                                       prominentCommic: commic,
+                                      userEntity: state.dataEntity.userEntity,
                                     )
                                 ),
                               );
@@ -138,7 +139,7 @@ class MainPage extends StatelessWidget{
             ),
             child: GridCommicWidget(totalPages: state.dataEntity.listLastUpdateCommic.totalPages, onPageChanged: (int p) {
               context.read<HomeBloc>().add(ChangePageHomeDataEvent(page: p, oldDataEntity: state.dataEntity));
-            }, lastUpdateCommics: state.dataEntity.listLastUpdateCommic.listLastUpdateCommics, currentPage: state.dataEntity.listLastUpdateCommic.currentPage,),
+            }, lastUpdateCommics: state.dataEntity.listLastUpdateCommic.listLastUpdateCommics, currentPage: state.dataEntity.listLastUpdateCommic.currentPage, userEntity: state.dataEntity.userEntity,),
           ),
         ],
       ),

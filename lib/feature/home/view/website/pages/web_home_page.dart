@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/core/user/user_provider.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
 import 'package:kujitoon/feature/home/view/website/pages/home_page.dart';
 import 'package:kujitoon/feature/home/view/website/pages/web_main_page.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/web/footer_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/web/header_bar_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/web/menu_widget.dart';
+import 'package:kujitoon/feature/shared_header/view/widgets/header_widget.dart';
 
 class WebHomePage extends StatefulWidget{
   final LoadedHomeState state;
@@ -29,7 +27,7 @@ class _WebHomePage extends State<WebHomePage>{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            HeaderBarWidget(),
+            HeaderWidget(),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -57,7 +55,7 @@ class _WebHomePage extends State<WebHomePage>{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Chào mừng trở lại, ${context.watch<UserProvider>().user?.name??"N/A"}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
+                                Text("Chào mừng trở lại, ${widget.state.dataEntity.userEntity.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
                                 Text("Khám phá thế giới truyện tranh đa dạng và tiếp tục hành trình đọc truyện của bạn.", style: TextStyle(fontSize: 15, color: AppColors.white, fontFamily: "EncodeSans"),)
                               ],
                             ),
