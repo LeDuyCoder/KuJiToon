@@ -51,8 +51,6 @@ class WebReadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(chapterInfomationEntity.currentIndex);
-
     final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(

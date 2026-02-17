@@ -28,7 +28,7 @@ import 'package:kujitoon/feature/read/data/datasource/read_datasource.dart';
 import 'package:kujitoon/feature/read/data/repositories/read_repository_impl.dart';
 import 'package:kujitoon/feature/read/domain/usecase/load_comment_usecase.dart';
 import 'package:kujitoon/feature/read/domain/usecase/read_usecase.dart';
-import 'package:kujitoon/feature/read/view/website/pages/web/read_page.dart';
+import 'package:kujitoon/feature/read/view/website/pages/read_page.dart';
 
 import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
 import 'package:kujitoon/feature/register/data/datasources/register_remote_datasource.dart';

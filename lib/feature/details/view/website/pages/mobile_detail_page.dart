@@ -38,40 +38,69 @@ class _MobileDetailPage extends State<MobileDetailPage>{
     return Scaffold(
       body: Stack(
         children: [
-          Expanded(
+          /// ===== CONTENT (SCROLL) =====
+          Positioned.fill(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 90),
               child: Column(
                 children: [
-                  SizedBox(height: 90,),
-                  ComicOverviewCardWidget(urlImage: widget.detailCommicEntity.urlImage,),
-                  ComicInformationCardWidget(detailCommicEntity: widget.detailCommicEntity),
-                  SizedBox(height: 20,),
-                  ComicChaptersCardWidget(listLastChapters: listLastChapters, selectedSort: selectedSort, changeTypeShow: (value){
-                    setState(() {
-                      selectedSort = value??'new';
-                    });
-                  }, originLastChapters: widget.detailCommicEntity.chapters.toList(),
-                    detailCommicEntity: widget.detailCommicEntity,),
-                  SizedBox(height: 40,),
-                  FooterWidget()
+                  ComicOverviewCardWidget(
+                    urlImage: widget.detailCommicEntity.urlImage,
+                  ),
+
+                  ComicInformationCardWidget(
+                    detailCommicEntity: widget.detailCommicEntity,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  /// 🔥 CHAPTER CARD (ĐÂY NÈ)
+                  ComicChaptersCardWidget(
+                    listLastChapters: listLastChapters,
+                    selectedSort: selectedSort,
+                    changeTypeShow: (value) {
+                      setState(() {
+                        selectedSort = value ?? 'new';
+                      });
+                    },
+                    originLastChapters:
+                    widget.detailCommicEntity.chapters.toList(),
+                    detailCommicEntity: widget.detailCommicEntity,
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  FooterWidget(),
                 ],
               ),
             ),
           ),
-          Column(
-            children: [
-              HeaderWidget(),
-              if(isOpenMenu)
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  height: isOpenMenu ? 250 : 0,
-                  child: ClipRect(
-                    child: MenuWidget(changePage: (String page) {}, userEntity: widget.userEntity,),
-                  ),
+
+          /// ===== HEADER (FIXED) =====
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: HeaderWidget(),
+          ),
+
+          /// ===== MENU =====
+          Positioned(
+            top: 90,
+            left: 0,
+            right: 0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              height: isOpenMenu ? 250 : 0,
+              child: ClipRect(
+                child: MenuWidget(
+                  changePage: (String page) {},
+                  userEntity: widget.userEntity,
                 ),
-            ],
-          )
+              ),
+            ),
+          ),
         ],
       ),
     );
