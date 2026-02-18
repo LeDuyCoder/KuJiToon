@@ -12,4 +12,6 @@ abstract class ReadRepository {
   );
 
   Future<List<CommentEntity>> getAllCommentBySlug(String slug);
+
+  Future<bool> sendCommentBySlug(String slug, CommentEntity comment);
 }

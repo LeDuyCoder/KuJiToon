@@ -11,8 +11,6 @@ import 'package:kujitoon/feature/read/view/website/pages/web/web_read_page.dart'
 class ReadPage extends StatelessWidget{
   const ReadPage({super.key});
 
-  
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ReadBloc, ReadState>(

@@ -136,7 +136,7 @@ class _ComicChapterCardWidget extends State<ComicChaptersCardWidget>{
                 );
               }
 
-              final realIndex = widget.selectedSort == "new"
+              final realIndex = widget.selectedSort == "old"
                   ? index
                   : (widget.listLastChapters.length - 1) - index;
 

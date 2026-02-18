@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
 import 'package:kujitoon/feature/read/bloc/comment_bloc.dart';
+import 'package:kujitoon/feature/read/bloc/comment_event.dart';
 import 'package:kujitoon/feature/read/bloc/comment_state.dart';
 import 'package:kujitoon/feature/read/view/website/widgets/comment_chat_widget.dart';
 import 'package:kujitoon/feature/read/view/website/widgets/comment_item.dart';
 
 class CommentWidget extends StatefulWidget{
-  const CommentWidget({super.key});
+  final String slug;
+  final int chapter;
+  const CommentWidget({super.key, required this.slug, required this.chapter});
 
   @override
   State<StatefulWidget> createState() => _CommentWidget();
@@ -38,11 +41,18 @@ class _CommentWidget extends State<CommentWidget>{
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text("${state.listComments.length} Bình Luận", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-                    CommentChatWidget(),
+                    CommentChatWidget(sendComment: (String comment){
+			context.read<CommentBloc>().add(SendCommentEvent(
+			  widget.slug, 
+			  widget.chapter, 
+			  comment, 
+			  state,
+			));
+		    }),
                     for(var comment in state.listComments)...[
                       CommentItem(
                         username: comment.userName,
-                        isAdmin: false,
+                        isAdmin: comment.isAdmin,
                         timeAgo: TimeAgo.time(comment.dateTime),
                         content: comment.comment,
                         chapter: comment.chapter,

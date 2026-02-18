@@ -29,4 +29,9 @@ class ReadRepositoryImpl implements ReadRepository {
   Future<List<CommentEntity>> getAllCommentBySlug(String slug) {
     return resource.getAllCommentBySlug(slug);
   }
+
+  @override
+  Future<bool> sendCommentBySlug(String slug, CommentEntity comment) {
+    return resource.sendCommentBySlug(slug, comment);
+  }
 }

@@ -219,7 +219,10 @@ class WebReadPage extends StatelessWidget {
                               ? 1200
                               : MediaQuery.sizeOf(context).width * 0.8,
                         ),
-                        child: CommentWidget(),
+                        child:  CommentWidget(
+			         slug: chapterInfomationEntity.detailCommicEntity.slug,  
+				 chapter: int.tryParse(chapterInfomationEntity.chapterEntity.chapterName,) ?? 0, 
+			       ),
                       ),
                       SizedBox(height: 20),
                     ],

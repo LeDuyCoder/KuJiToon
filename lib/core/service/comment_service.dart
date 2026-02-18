@@ -16,6 +16,7 @@ class CommentService implements BaseService<List<CommentDto>, String> {
     
     return doc.docs.map((comment) {
       return CommentDto(
+	  isAdmin: comment.data()["isAdmin"],
           userId: comment.data()["userid"],
           userName: comment.data()["username"],
           comment: comment.data()["comment"],
@@ -23,5 +24,31 @@ class CommentService implements BaseService<List<CommentDto>, String> {
           timestamp: comment.data()["create_at"]
       );
     }).toList();
+  }
+
+
+  Future<bool> sendComment(String slug, CommentDto comment) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    bool result = false;
+
+    try{
+    	firestore.collection("data")
+		    .doc("commics")
+		    .collection(slug)
+		    .doc("comments")
+		    .collection("data")
+		    .add(<String, dynamic>{
+			"chapter": comment.chapter,
+			"comment": comment.comment,
+			"create_at": comment.timestamp,
+			"userid": comment.userId,
+			"username": comment.userName,
+			"isAdmin": comment.isAdmin
+		    });
+	result = true;
+    }catch(e){
+	result = false;
+    }
+    return Future.value(result);
   }
 }

@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CommentChatWidget extends StatelessWidget{
-  const CommentChatWidget({super.key});
+  final void Function(String comment) sendComment;
+  const CommentChatWidget({super.key, required this.sendComment});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController commentControllerInput = TextEditingController();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -33,6 +36,7 @@ class CommentChatWidget extends StatelessWidget{
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TextField(
+		controller: commentControllerInput,
                 decoration: const InputDecoration(
                   hintText: 'Thêm bình luận của bạn...',
                   border: InputBorder.none,
@@ -45,9 +49,9 @@ class CommentChatWidget extends StatelessWidget{
 
           // Send button
           GestureDetector(
-            onTap: () {
-              // TODO: handle send comment
-            },
+            onTap: (){
+	     sendComment(commentControllerInput.text);
+	    },
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(

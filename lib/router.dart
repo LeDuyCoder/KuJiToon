@@ -28,6 +28,7 @@ import 'package:kujitoon/feature/read/data/datasource/read_datasource.dart';
 import 'package:kujitoon/feature/read/data/repositories/read_repository_impl.dart';
 import 'package:kujitoon/feature/read/domain/usecase/load_comment_usecase.dart';
 import 'package:kujitoon/feature/read/domain/usecase/read_usecase.dart';
+import 'package:kujitoon/feature/read/domain/usecase/send_comment_usecase.dart';
 import 'package:kujitoon/feature/read/view/website/pages/read_page.dart';
 
 import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
@@ -36,12 +37,14 @@ import 'package:kujitoon/feature/register/data/repositories/register_repository_
 import 'package:kujitoon/feature/register/domain/usecases/register_usecase.dart';
 import 'package:kujitoon/feature/splash/view/splash_screen.dart';
 
+// ignore: library_prefixes
 import 'package:kujitoon/feature/auth/view/mobile/pages/login_page.dart' as MobileLogin;
+// ignore: library_prefixes
 import 'package:kujitoon/feature/auth/view/web/pages/login_page.dart' as WebLogin;
-
+// ignore: library_prefixes
 import 'package:kujitoon/feature/register/view/mobile/pages/register_page.dart' as MobileRegister;
+// ignore: library_prefixes
 import 'package:kujitoon/feature/register/view/web/pages/register_page.dart' as WebRegister;
-import 'package:universal_html/js.dart';
 
 
 Map<String, Widget Function(BuildContext context)> get routes {
@@ -153,7 +156,10 @@ Map<String, Widget Function(BuildContext context)> get routes {
               create: (_) => CommentBloc(
                   loadCommentUsecase: LoadCommentUsecase(
                     repository: ReadRepositoryImpl(resource: ReadDatasource())
-                  )
+                  ), 
+		  sendCommentUsecase: SendCommentUsecase(
+		    repository:	ReadRepositoryImpl(resource: ReadDatasource())
+		  )
               )..add(LoadCommentEvent(slug: detailComicEntity.slug))
           )
         ],

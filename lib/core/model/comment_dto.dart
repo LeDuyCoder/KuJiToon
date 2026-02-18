@@ -6,6 +6,7 @@ class CommentDto {
   final String comment;
   final int chapter;
   final Timestamp timestamp;
+  final bool isAdmin;
 
-  CommentDto({required this.userId, required this.userName, required this.comment, required this.chapter, required this.timestamp});
+  CommentDto({required this.isAdmin, required this.userId, required this.userName, required this.comment, required this.chapter, required this.timestamp});
 }

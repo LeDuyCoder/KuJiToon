@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kujitoon/core/model/chapter_dto.dart';
 import 'package:kujitoon/core/model/comment_dto.dart';
 import 'package:kujitoon/core/service/chapter_service.dart';
@@ -7,6 +10,7 @@ import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dar
 import 'package:kujitoon/feature/read/domain/entities/chapter_infomation_entity.dart';
 import 'package:kujitoon/feature/read/domain/entities/chater_entity.dart';
 import 'package:kujitoon/feature/read/domain/entities/comment_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReadDatasource {
   Future<ChapterInfomationEntity?> feachData(
@@ -44,6 +48,7 @@ class ReadDatasource {
 
     comments.addAll(commentsDTO.map((comment){
       return CommentEntity(
+	  isAdmin: comment.isAdmin,
           userId: comment.userId,
           userName: comment.userName,
           comment: comment.comment,
@@ -53,5 +58,23 @@ class ReadDatasource {
     }).toList());
 
     return comments;
+  }
+
+  Future<bool> sendCommentBySlug(String slug, CommentEntity comment) async {
+    CommentService commentService = CommentService();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool result = false;
+
+    CommentDto commentDto = CommentDto(
+	    userId: comment.userId, 
+	    userName: comment.userName, 
+	    comment: comment.comment, 
+	    chapter: comment.chapter, 
+	    timestamp: Timestamp.fromDate(comment.dateTime), 
+	    isAdmin: jsonDecode(pref.getString("user")??"")["admin"],
+	);
+
+    result = await commentService.sendComment(slug, commentDto);
+    return Future.value(result);
   }
 }
