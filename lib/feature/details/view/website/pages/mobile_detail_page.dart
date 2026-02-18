@@ -5,14 +5,16 @@ import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dar
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_chapters_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_information_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_overview_card_widget.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/footer_widget.dart';
-import 'package:kujitoon/feature/home/view/website/widgets/mobile/header_bar_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/menu_widget.dart';
+import 'package:kujitoon/feature/shared_header/view/widgets/header_widget.dart';
 
 class MobileDetailPage extends StatefulWidget{
   final DetailCommicEntity detailCommicEntity;
+  final UserEntity userEntity;
 
-  const MobileDetailPage({super.key, required this.detailCommicEntity});
+  const MobileDetailPage({super.key, required this.detailCommicEntity, required this.userEntity});
 
   @override
   State<StatefulWidget> createState() => _MobileDetailPage();
@@ -36,46 +38,69 @@ class _MobileDetailPage extends State<MobileDetailPage>{
     return Scaffold(
       body: Stack(
         children: [
-          Expanded(
+          /// ===== CONTENT (SCROLL) =====
+          Positioned.fill(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 90),
               child: Column(
                 children: [
-                  SizedBox(height: 90,),
-                  ComicOverviewCardWidget(urlImage: widget.detailCommicEntity.urlImage,),
-                  ComicInformationCardWidget(detailCommicEntity: widget.detailCommicEntity),
-                  SizedBox(height: 20,),
-                  ComicChaptersCardWidget(listLastChapters: listLastChapters, selectedSort: selectedSort, changeTypeShow: (value){
-                    setState(() {
-                      selectedSort = value??'new';
-                    });
-                  }),
-                  SizedBox(height: 40,),
-                  FooterWidget()
+                  ComicOverviewCardWidget(
+                    urlImage: widget.detailCommicEntity.urlImage,
+                  ),
+
+                  ComicInformationCardWidget(
+                    detailCommicEntity: widget.detailCommicEntity,
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  /// 🔥 CHAPTER CARD (ĐÂY NÈ)
+                  ComicChaptersCardWidget(
+                    listLastChapters: listLastChapters,
+                    selectedSort: selectedSort,
+                    changeTypeShow: (value) {
+                      setState(() {
+                        selectedSort = value ?? 'new';
+                      });
+                    },
+                    originLastChapters:
+                    widget.detailCommicEntity.chapters.toList(),
+                    detailCommicEntity: widget.detailCommicEntity,
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  FooterWidget(),
                 ],
               ),
             ),
           ),
-          Column(
-            children: [
-              HeaderBarWidget(
-                openMenu: (bool opened) {
-                  setState(() {
-                    isOpenMenu = opened;
-                  });
-                },
-                isOpenMenu: isOpenMenu,
-              ),
-              if(isOpenMenu)
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  height: isOpenMenu ? 250 : 0,
-                  child: ClipRect(
-                    child: MenuWidget(changePage: (String page) {},),
-                  ),
+
+          /// ===== HEADER (FIXED) =====
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: HeaderWidget(),
+          ),
+
+          /// ===== MENU =====
+          Positioned(
+            top: 90,
+            left: 0,
+            right: 0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.easeInOut,
+              height: isOpenMenu ? 250 : 0,
+              child: ClipRect(
+                child: MenuWidget(
+                  changePage: (String page) {},
+                  userEntity: widget.userEntity,
                 ),
-            ],
-          )
+              ),
+            ),
+          ),
         ],
       ),
     );

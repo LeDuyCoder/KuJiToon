@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kujitoon/core/routes/fade_route.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
+import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
 
 class ChapterWidget extends StatelessWidget{
+  final List<LastChapterEntity> chapterEntities;
   final LastChapterEntity chapterEntity;
+  final DetailCommicEntity detailCommicEntity;
+  final int currentIndex;
 
-  const ChapterWidget({super.key, required this.chapterEntity});
+  const ChapterWidget({super.key, required this.chapterEntity, required this.chapterEntities, required this.detailCommicEntity, required this.currentIndex});
 
   DateTime getCreatedDateFromObjectId(String objectId) {
     final timestampHex = objectId.substring(0, 8);
@@ -20,7 +25,6 @@ class ChapterWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.symmetric(vertical: 6),
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -50,8 +54,17 @@ class ChapterWidget extends StatelessWidget{
               ),
               SizedBox(width: 12),
               ElevatedButton(
-                onPressed: () {
-                  // TODO: navigate to read page
+                onPressed: (){
+                  Navigator.pushNamed(
+                    context,
+                    '/read',
+                    arguments: {
+                      'chapters': chapterEntities, // List<ChapterEntity>
+                      'urlChapter': chapterEntity.chapterApiData, // String
+                      'detailComicEntity': detailCommicEntity,
+                      'currentIndexChapter': currentIndex
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: chapterEntity.isRead

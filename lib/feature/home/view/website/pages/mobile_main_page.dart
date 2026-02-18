@@ -57,7 +57,7 @@ class MainPage extends StatelessWidget{
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Chào mừng trở lại, ${context.watch<UserProvider>().user?.name??"N/A"}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
+                                      Text("Chào mừng trở lại, ${state.dataEntity.userEntity.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
                                       Text("Khám phá thế giới truyện tranh đa dạng và tiếp tục hành trình đọc truyện của bạn.", style: TextStyle(fontSize: 15, color: AppColors.white, fontFamily: "EncodeSans"),)
                                     ],
                                   ),
@@ -116,6 +116,7 @@ class MainPage extends StatelessWidget{
                                                     alignment: Alignment.topCenter,
                                                     child: ProminentCommicWidget(
                                                       prominentCommic: commic,
+                                                      userEntity: state.dataEntity.userEntity,
                                                     )
                                                 ),
                                               );
@@ -174,7 +175,7 @@ class MainPage extends StatelessWidget{
                                   SizedBox(height: 10,),
                                   GridCommicWidget(totalPages: state.dataEntity.listLastUpdateCommic.totalPages, onPageChanged: (int p) {
                                     context.read<HomeBloc>().add(ChangePageHomeDataEvent(page: p, oldDataEntity: state.dataEntity));
-                                  }, lastUpdateCommics: state.dataEntity.listLastUpdateCommic.listLastUpdateCommics, currentPage: state.dataEntity.listLastUpdateCommic.currentPage,),
+                                  }, lastUpdateCommics: state.dataEntity.listLastUpdateCommic.listLastUpdateCommics, currentPage: state.dataEntity.listLastUpdateCommic.currentPage, userEntity: state.dataEntity.userEntity,),
                                 ],
                               )
                           )

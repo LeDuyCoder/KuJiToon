@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kujitoon/core/enum/status_enum.dart';
@@ -14,6 +16,8 @@ import 'package:kujitoon/feature/home/domain/entities/list_last_update_commic.da
 import 'package:kujitoon/feature/home/domain/entities/list_prominent_commic.dart';
 
 import 'package:kujitoon/feature/home/domain/entities/prominent_commic.dart';
+import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeDatasource {
 
@@ -100,6 +104,19 @@ class HomeDatasource {
   }
 
 
+  Future<UserEntity> loadUserEntity() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> dataUser = jsonDecode(sharedPreferences.getString("user")!);
+
+    return UserEntity(
+        name: dataUser["name"],
+        email: dataUser["email"],
+        admin: dataUser["admin"],
+        avatar: dataUser["avatar"],
+        created_at: DateTime.fromMillisecondsSinceEpoch(dataUser["created_at"], isUtc: true)
+            .toLocal()
+    );
+  }
 
 
 
@@ -108,12 +125,14 @@ class HomeDatasource {
     final prominentCommics = await fetchProminentCommics();
     final lastUpdateCommic = await fetchLastUpdateCommics(1);
     final lastReadCommic = await featchLastReadCommic();
+    final userEntity = await loadUserEntity();
 
     return DataEntity(
       lastReadCommic: lastReadCommic,
       listProminentCommic:
       ListProminentCommic(listProminentCommics: prominentCommics),
       listLastUpdateCommic: lastUpdateCommic,
+      userEntity: userEntity,
     );
   }
 
@@ -125,6 +144,7 @@ class HomeDatasource {
       lastReadCommic: oldDataEntity.lastReadCommic,
       listProminentCommic: oldDataEntity.listProminentCommic,
       listLastUpdateCommic: lastUpdateCommic,
+      userEntity: oldDataEntity.userEntity,
     );
 
     return newDataEntity;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
 import 'package:kujitoon/router.dart';
 
@@ -14,6 +15,7 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   late final StreamSubscription<User?> _sub;
+  bool _handled = false;
 
   @override
   void initState() {
@@ -23,19 +25,25 @@ class _AuthGateState extends State<AuthGate> {
         .listen(_onAuthChanged);
   }
 
-  void _onAuthChanged(User? user) {
+  Future<void> _onAuthChanged(User? user) async {
+    if (!mounted || _handled) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final hasUserCache = prefs.containsKey('user');
+
+    _handled = true;
+
+    final targetRoute = hasUserCache ? '/home' : '/login';
+
     if (!mounted) return;
 
-    if (kIsWeb) {
-
-      Navigator.pushReplacement(
-        context,
-        FadeRoute(
-          settings: RouteSettings(name: user != null ? '/home' : '/login'),
-          builder: routes[user != null ? '/home' : '/login']!, // 👈 lấy đúng route đã khai báo
-        ),
-      );
-    }
+    Navigator.pushReplacement(
+      context,
+      FadeRoute(
+        settings: RouteSettings(name: targetRoute),
+        builder: routes[targetRoute]!,
+      ),
+    );
   }
 
   @override

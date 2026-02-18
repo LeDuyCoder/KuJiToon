@@ -1,25 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/core/user/user_provider.dart';
-import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
+import 'package:kujitoon/feature/shared_header/domain/entities/user_entity.dart';
 
-class HeaderBarWidget extends StatefulWidget{
+class MobileHeaderWidget extends StatefulWidget {
   final bool isOpenMenu;
-
   final void Function(bool opened) openMenu;
+  final UserEntity userEntity;
 
-  HeaderBarWidget({super.key, required this.openMenu, required this.isOpenMenu});
+  const MobileHeaderWidget({
+    super.key,
+    required this.isOpenMenu,
+    required this.openMenu,
+    required this.userEntity,
+  });
 
   @override
-  State<StatefulWidget> createState() => _HeaderBarWidget();
+  State<StatefulWidget> createState() => _MobileHeaderWidget();
 }
 
-class _HeaderBarWidget extends State<HeaderBarWidget>{
-
+class _MobileHeaderWidget extends State<MobileHeaderWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,46 +33,60 @@ class _HeaderBarWidget extends State<HeaderBarWidget>{
           Container(
             child: Row(
               children: [
-                SizedBox(width: 10,),
-                Row(
-                  children: [
-                    Icon(Icons.menu_book, color: AppColors.white, size: 20,),
-                    SizedBox(width: 8,),
-                    Text("Kujitoon", style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 25,
-                        fontFamily: "IrishGrover-Regular"
-                    ),)
-                  ],
+                SizedBox(width: 10),
+                HoverableWidget(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/home");
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.menu_book, color: AppColors.white, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        "Kujitoon",
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 25,
+                          fontFamily: "IrishGrover-Regular",
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(width: 20,),
+                SizedBox(width: 20),
                 Expanded(
                   child: Container(
                     width: double.infinity,
                     height: 35,
-                    decoration:  BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 10,),
-                        Icon(Icons.search, color: Colors.black54, size: 20,),
-                        SizedBox(width: 10,),
+                        SizedBox(width: 10),
+                        Icon(Icons.search, color: Colors.black54, size: 20),
+                        SizedBox(width: 10),
                         Expanded(
                           child: TextFormField(
                             readOnly: true,
                             decoration: InputDecoration(
                               hintText: "Tìm kiếm truyện tranh...",
-                              hintStyle: TextStyle(color: Colors.grey, fontSize: 12, fontFamily: "EncodeSans"),
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontFamily: "EncodeSans",
+                              ),
                               border: InputBorder.none,
                               isDense: true,
-                              contentPadding: EdgeInsets.symmetric(vertical: 16),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 16,
+                              ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -102,10 +117,10 @@ class _HeaderBarWidget extends State<HeaderBarWidget>{
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
