@@ -29,7 +29,7 @@ class MainPage extends StatelessWidget{
     var _widget = MediaQuery.sizeOf(context).width;
     var _hight = MediaQuery.sizeOf(context).height;
 
-    return Container(
+    return SizedBox(
         width: _widget,
         height: _hight,
         child: Column(
@@ -43,26 +43,24 @@ class MainPage extends StatelessWidget{
                       Column(
                         children: [
                           SizedBox(height: 120,),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.all(Radius.circular(20))
+                          Container(
+                              width: _widget*0.95,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.all(Radius.circular(20))
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Chào mừng trở lại, ${state.dataEntity.userEntity.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
+                                    Text("Khám phá thế giới truyện tranh đa dạng và tiếp tục hành trình đọc truyện của bạn.", style: TextStyle(fontSize: 15, color: AppColors.white, fontFamily: "EncodeSans"),)
+                                  ],
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("Chào mừng trở lại, ${state.dataEntity.userEntity.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.white, fontFamily: "EncodeSans"),),
-                                      Text("Khám phá thế giới truyện tranh đa dạng và tiếp tục hành trình đọc truyện của bạn.", style: TextStyle(fontSize: 15, color: AppColors.white, fontFamily: "EncodeSans"),)
-                                    ],
-                                  ),
-                                )
-                            ),
+                              )
                           ),
                           SizedBox(height: 20,),
                           //Truyện nổi bật
