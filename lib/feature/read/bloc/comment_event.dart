@@ -1,5 +1,4 @@
 import 'package:kujitoon/feature/read/bloc/comment_state.dart';
-import 'package:kujitoon/feature/read/domain/entities/comment_entity.dart';
 
 abstract class CommentEvent {}
 

@@ -36,10 +36,7 @@ class _HeaderWidget extends State<HeaderWidget>{
             if(state is LoadedHeaderState){
               return Responsive.isDesktop(context)
                   ? WebsiteHeaderWidget(userEntity: state.userEntity)
-                  : MobileHeaderWidget(
-                    isOpenMenu: widget.isOpeneMenu,
-                    openMenu: widget.openMenu, userEntity: state.userEntity,
-                );
+                  : MobileHeaderWidget(userEntity: state.userEntity,);
             }
 
             return Container();

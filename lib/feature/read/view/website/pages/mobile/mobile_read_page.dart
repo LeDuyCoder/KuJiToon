@@ -101,172 +101,226 @@ class MobileReadPage extends StatelessWidget {
               : const SizedBox.shrink();
         },
       ),
-      body: Column(
+      body: Stack(
         children: [
-          HeaderWidget(),
-          Expanded(
-            child: CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1200),
-                        child: Container(
-                          height: 60,
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 6,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text.rich(
-                                  TextSpan(
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: chapterInfomationEntity
-                                            .detailCommicEntity
-                                            .title,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                        ' - Chapter ${chapterInfomationEntity.chapterEntity.chapterName}',
-                                      ),
-                                    ],
+          Column(
+            children: [
+              /// CONTENT
+              SizedBox(height: 100,),
+              Expanded(
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    /// ===== TOP BAR =====
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 19,
+                          horizontal: 10,
+                        ),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 1199),
+                            child: Container(
+                              height: 59,
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 19),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 5,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                ],
                               ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text.rich(
+                                      TextSpan(
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          color: Colors.black,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: chapterInfomationEntity
+                                                .detailCommicEntity
+                                                .title,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                            ' - Chapter ${chapterInfomationEntity.chapterEntity.chapterName}',
+                                          ),
+                                        ],
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
 
-                              if (chapterInfomationEntity.currentIndex > 0) ...[
-                                NavButton(text: 'Trang Trước', onPressed: () {}),
-                                const SizedBox(width: 8),
-                              ],
+                                  if (chapterInfomationEntity.currentIndex > -1) ...[
+                                    NavButton(
+                                      text: 'Trang Trước',
+                                      onPressed: () async {
+                                        await backChapter(context);
+                                      },
+                                    ),
+                                    const SizedBox(width: 7),
+                                  ],
 
-                              ChapterDropdown(chapterInfomationEntity),
-                              const SizedBox(width: 8),
+                                  ChapterDropdown(chapterInfomationEntity),
+                                  const SizedBox(width: 7),
 
-                              if (chapterInfomationEntity.currentIndex <
-                                  chapterInfomationEntity.listChapters.length -
-                                      1)
-                                NavButton(text: 'Trang Sau', onPressed: () {}),
-                            ],
+                                  if (chapterInfomationEntity.currentIndex <
+                                      chapterInfomationEntity
+                                          .listChapters.length -
+                                          1)
+                                    NavButton(
+                                      text: 'Trang Sau',
+                                      onPressed: () async {
+                                        await nextChapter(context);
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      final imageChapter = chapterInfomationEntity
-                          .chapterEntity
-                          .listChapterImages[index];
 
-                      final imageUrl =
-                          "${chapterInfomationEntity.chapterEntity.domainCDN}"
-                          "/${chapterInfomationEntity.chapterEntity.chapterPath}"
-                          "/$imageChapter";
+                    /// ===== IMAGES =====
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                          final imageChapter =
+                          chapterInfomationEntity
+                              .chapterEntity
+                              .listChapterImages[index];
 
-                      return Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: Responsive.isDesktop(context)
-                                ? 1200
-                                : double.infinity,
-                          ),
-                          child: ChapterImageWeb(imageUrl: imageUrl),
-                        ),
-                      );
-                    },
-                    childCount: chapterInfomationEntity
-                        .chapterEntity
-                        .listChapterImages
-                        .length,
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20,),
-                      Container(
-                        constraints: BoxConstraints(
-                          maxWidth: Responsive.isDesktop(context)
-                              ? 1200
-                              : MediaQuery.sizeOf(context).width * 0.8,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (chapterInfomationEntity.currentIndex > 0)
-                              NavButton(
-                                text: 'Trang Trước',
-                                onPressed: () async {
-                                  await backChapter(context);
-                                },
+                          final imageUrl =
+                              "${chapterInfomationEntity.chapterEntity.domainCDN}"
+                              "/${chapterInfomationEntity.chapterEntity.chapterPath}"
+                              "/$imageChapter";
+
+                          return Center(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                Responsive.isDesktop(context)
+                                    ? 1199
+                                    : double.infinity,
                               ),
-                            const SizedBox(width: 8),
-                            Container(
-                              height: 36,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFEFEFEF),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Chapter ${chapterInfomationEntity.chapterEntity.chapterName}",
-                                ),
+                              child: ChapterImageWeb(
+                                imageUrl: imageUrl,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            if (chapterInfomationEntity.currentIndex <
-                                chapterInfomationEntity.listChapters.length - 1)
-                              NavButton(
-                                text: 'Trang Sau',
-                                onPressed: () async {
-                                  await nextChapter(context);
-                                },
+                          );
+                        },
+                        childCount: chapterInfomationEntity
+                            .chapterEntity
+                            .listChapterImages
+                            .length,
+                      ),
+                    ),
+
+                    /// ===== BOTTOM NAV + COMMENT =====
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 19),
+
+                          Center(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                Responsive.isDesktop(context)
+                                    ? 1199
+                                    : double.infinity,
                               ),
-                          ],
-                        ),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  if (chapterInfomationEntity.currentIndex >
+                                      -1)
+                                    NavButton(
+                                      text: 'Trang Trước',
+                                      onPressed: () async {
+                                        await backChapter(context);
+                                      },
+                                    ),
+
+                                  const SizedBox(width: 7),
+
+                                  Container(
+                                    height: 35,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFEFEFEE),
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Chapter ${chapterInfomationEntity.chapterEntity.chapterName}",
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 7),
+
+                                  if (chapterInfomationEntity.currentIndex <
+                                      chapterInfomationEntity
+                                          .listChapters.length -
+                                          1)
+                                    NavButton(
+                                      text: 'Trang Sau',
+                                      onPressed: () async {
+                                        await nextChapter(context);
+                                      },
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 19),
+
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 9),
+                            child: CommentWidget(
+                              slug: chapterInfomationEntity
+                                  .detailCommicEntity
+                                  .slug,
+                              chapter: int.tryParse(
+                                chapterInfomationEntity
+                                    .chapterEntity
+                                    .chapterName,
+                              ) ??
+                                  -1,
+                            ),
+                          ),
+
+                          const SizedBox(height: 19),
+
+                          FooterWidget(),
+                        ],
                       ),
-                      SizedBox(height: 20,),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: CommentWidget(
-			         slug: chapterInfomationEntity.detailCommicEntity.slug,  
-				 chapter: int.tryParse(chapterInfomationEntity.chapterEntity.chapterName,) ?? 0, 
-			       ),
-                      ),
-                      SizedBox(height: 20,),
-                      FooterWidget()
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+          HeaderWidget(),
         ],
       ),
     );
