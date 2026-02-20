@@ -30,4 +30,14 @@ class LastChapterEntity {
       'isRead': isRead
     };
   }
+
+  factory LastChapterEntity.fromJson(Map<String, dynamic> json) {
+    return LastChapterEntity(
+      name: json['name'] as String,
+      chapterTitle: json['chapterTitle'] as String,
+      fileName: json['fileName'] as String,
+      chapterApiData: json['chapterApiData'] as String,
+      isRead: json['isRead'] as bool,
+    );
+  }
 }

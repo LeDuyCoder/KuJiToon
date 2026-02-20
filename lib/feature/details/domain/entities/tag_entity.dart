@@ -8,4 +8,20 @@ class TagEntity {
   String get slug => _slug;
   String get name => _name;
   String get id => _id;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': _id,
+      'name': _name,
+      'slug': _slug,
+    };
+  }
+
+  factory TagEntity.fromJson(Map<String, dynamic> json) {
+    return TagEntity(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      slug: json['slug'] as String,
+    );
+  }
 }

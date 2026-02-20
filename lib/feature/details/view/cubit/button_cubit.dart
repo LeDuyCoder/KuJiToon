@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:html' as html;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
@@ -42,15 +42,20 @@ class ButtonCubit extends Cubit<ButtonState> {
 
     emit(ContinuteButtonState(indexChapter: index));
 
-    Navigator.pushNamed(
-      context,
-      '/read',
-      arguments: {
-        'chapters': chapterEntities, // List<ChapterEntity>
-        'urlChapter': chapterEntities.elementAt(index).chapterApiData, // String
-        'detailComicEntity': detailCommicEntity,
-        'currentIndexChapter': index
+    html.window.sessionStorage['READ_PAYLOAD'] = jsonEncode({
+      "detailCommicEntity": detailCommicEntity.toJson(),
+      "chapters": chapterEntities,
+      "urlChapter": chapterEntities.elementAt(index).chapterApiData,
+      "currentIndex": index
+    });
+
+    final uri = Uri(
+      path: '/read',
+      queryParameters: {
+        'slug': detailCommicEntity.slug,
       },
     );
+
+    Navigator.pushNamed(context, uri.toString());
   }
 }

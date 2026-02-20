@@ -71,15 +71,11 @@ class _ComicOverviewCardWidget extends State<ComicOverviewCardWidget>{
                     context.read<DetailBloc>().add(IncreaseViewEvent(detailCommicEntity: widget.detailCommicEntity));
 
                     if(state is ContinuteButtonState){
-                      if(!widget.originLastChapters.elementAt(state.indexChapter).isRead){
-                        context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(state.indexChapter).name, slug: widget.detailCommicEntity.slug, indexChapter: state.indexChapter));
-                        widget.originLastChapters.elementAt(state.indexChapter).isRead = true;
-                      }
+                      context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(state.indexChapter).name, slug: widget.detailCommicEntity.slug, indexChapter: state.indexChapter));
+                      widget.originLastChapters.elementAt(state.indexChapter).isRead = true;
                     }else{
-                      if(!widget.originLastChapters.elementAt(0).isRead){
-                        context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(0).name, slug: widget.detailCommicEntity.slug, indexChapter: 0));
-                        widget.originLastChapters.elementAt(0).isRead = true;
-                      }
+                      context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(0).name, slug: widget.detailCommicEntity.slug, indexChapter: 0));
+                      widget.originLastChapters.elementAt(0).isRead = true;
                     }
 
                   },

@@ -4,6 +4,15 @@ enum StatusEnum {
   pending,
 }
 
+extension StatusEnumX on StatusEnum {
+  String toJson() => name;
+
+  static StatusEnum fromJson(String value) =>
+      StatusEnum.values.firstWhere(
+            (e) => e.name == value,
+      );
+}
+
 extension StatusEnumExt on StatusEnum {
   /// Giá trị gửi lên / nhận từ API
   String get value {
