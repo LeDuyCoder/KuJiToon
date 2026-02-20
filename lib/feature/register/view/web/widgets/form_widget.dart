@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
+import 'package:kujitoon/core/routes/router.dart';
 import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
 import 'package:kujitoon/feature/register/view/mobile/widgets/strong_password_widget.dart';
-import 'package:kujitoon/router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FormWidget extends StatefulWidget{
@@ -271,7 +271,7 @@ class _FormWidget extends State<FormWidget>{
                     context,
                     FadeRoute(
                       settings: const RouteSettings(name: '/login'),
-                      builder: routes['/login']!,
+                      builder: AppRoutes.routes['/login']!,
                     ),
                   );
                 },

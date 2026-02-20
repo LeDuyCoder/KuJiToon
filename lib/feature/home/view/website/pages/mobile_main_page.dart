@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/core/user/user_provider.dart';
 import 'package:kujitoon/feature/home/bloc/home_bloc.dart';
 import 'package:kujitoon/feature/home/bloc/home_event.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';

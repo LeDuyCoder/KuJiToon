@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
+import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
+import 'package:kujitoon/feature/details/bloc/detail_event.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
 
@@ -54,7 +57,13 @@ class ChapterWidget extends StatelessWidget{
               ),
               SizedBox(width: 12),
               ElevatedButton(
-                onPressed: (){
+                onPressed: () {
+                  context.read<DetailBloc>().add(IncreaseViewEvent(detailCommicEntity: detailCommicEntity));
+
+                  if(!chapterEntity.isRead){
+                    context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: chapterEntity.name, slug: detailCommicEntity.slug, indexChapter: currentIndex));
+                    chapterEntity.isRead = true;
+                  }
                   Navigator.pushNamed(
                     context,
                     '/read',

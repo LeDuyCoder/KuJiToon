@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kujitoon/core/routes/router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
-import 'package:kujitoon/router.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
@@ -41,7 +40,7 @@ class _AuthGateState extends State<AuthGate> {
       context,
       FadeRoute(
         settings: RouteSettings(name: targetRoute),
-        builder: routes[targetRoute]!,
+        builder: AppRoutes.routes[targetRoute]!,
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
+import 'package:kujitoon/feature/details/view/cubit/button_cubit.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_information_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/web/comic_chapters_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/web/comic_overview_card_widget.dart';
@@ -51,8 +53,16 @@ class _WebDetailPage extends State<WebDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ComicOverviewCardWidget(
-                            urlImage: widget.detailCommicEntity.urlImage,
+                          BlocProvider(
+                              create: (_) => ButtonCubit(),
+                              child: ComicOverviewCardWidget(
+                                urlImage: widget.detailCommicEntity.urlImage,
+                                originLastChapters: widget
+                                    .detailCommicEntity
+                                    .chapters
+                                    .toList(),
+                                detailCommicEntity: widget.detailCommicEntity,
+                              ),
                           ),
                           Expanded(
                             child: ComicInformationCardWidget(

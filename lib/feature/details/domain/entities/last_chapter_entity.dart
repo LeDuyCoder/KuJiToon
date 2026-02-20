@@ -3,25 +3,23 @@ class LastChapterEntity {
   final String _chapterTitle;
   final String _fileName;
   final String _chapterApiData;
-  final bool _isRead;
+  bool isRead;
 
   LastChapterEntity({
     required String name,
     required String chapterTitle,
     required String fileName,
     required String chapterApiData,
-    required bool isRead
+    required this.isRead
   })  : _name = name,
         _chapterTitle = chapterTitle,
         _fileName = fileName,
-        _chapterApiData = chapterApiData,
-        _isRead = isRead;
+        _chapterApiData = chapterApiData;
 
   String get chapterApiData => _chapterApiData;
   String get fileName => _fileName;
   String get chapterTitle => _chapterTitle;
   String get name => _name;
-  bool get isRead => _isRead;
 
   Map<String, dynamic> toJson() {
     return {
@@ -29,7 +27,7 @@ class LastChapterEntity {
       'chapterTitle': _chapterTitle,
       'fileName': _fileName,
       'chapterApiData': _chapterApiData,
-      'isRead': _isRead
+      'isRead': isRead
     };
   }
 }

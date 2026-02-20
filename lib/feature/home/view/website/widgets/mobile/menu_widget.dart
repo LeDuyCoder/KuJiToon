@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/core/user/user_provider.dart';
 import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 
 class MenuWidget extends StatelessWidget{

@@ -16,14 +16,15 @@ class ProminentCommicWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     return HoverableWidget(
       onTap: (){
-        Navigator.pushNamed(
-          context,
-          '/detail',
-          arguments: {
-            "slug": prominentCommic.slug,
-            "userEntity": userEntity
+        final uri = Uri(
+          path: '/detail',
+          queryParameters: {
+            'slug': prominentCommic.slug,
+            ...userEntity.toQueryParams(), // 👈 gộp object vào đây
           },
         );
+
+        Navigator.pushNamed(context, uri.toString());
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),

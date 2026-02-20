@@ -9,4 +9,13 @@ class DetailCommicUsecase {
   Future<DetailCommicEntity?> fetchData(String slug) {
     return repository.featchData(slug);
   }
+
+  Future<void> updateChapterRead(String slug, String chapter, int indexChapter){
+    return repository.updateReadingProgress(slug, chapter, indexChapter);
+  }
+
+
+  Future<void> inscreaseView(String slug, int amountCurrentView) async {
+    repository.updateView(slug, amountCurrentView);
+  }
 }
