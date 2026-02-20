@@ -19,35 +19,47 @@ class GridCommicWidget extends StatefulWidget{
 }
 
 class _GridCommicWidgetState extends State<GridCommicWidget> {
+  int _getCrossAxisCount(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    if (width < 360) {
+      return 2; // siêu nhỏ
+    } else if (width < 600) {
+      return 3; // nhỏ / mobile thường
+    } else if (width < 650) {
+      return 4; // tablet
+    } else {
+      return 5; // desktop (nếu cần)
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          GridView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: widget.lastUpdateCommics.length,
-            shrinkWrap: true, // ⭐ QUAN TRỌNG
-            physics: const NeverScrollableScrollPhysics(), // ⭐ Tắt scroll
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 0.65,
-            ),
-            itemBuilder: (context, index) {
-              final commic = widget.lastUpdateCommics[index];
-              return LatesCommicWidget(lastUpdateCommic: commic, userEntity: widget.userEntity,);
-            },
+    return Column(
+      children: [
+        GridView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: widget.lastUpdateCommics.length,
+          shrinkWrap: true, // ⭐ QUAN TRỌNG
+          physics: const NeverScrollableScrollPhysics(), // ⭐ Tắt scroll
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _getCrossAxisCount(context),
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.65,
           ),
-          PaginationWidget(
-            currentPage: widget.currentPage,
-            totalPages: widget.totalPages,
-            onPageChanged: widget.onPageChanged
-          ),
-          SizedBox(height: 20,)
-        ],
-      ),
+          itemBuilder: (context, index) {
+            final commic = widget.lastUpdateCommics[index];
+            return LatesCommicWidget(lastUpdateCommic: commic, userEntity: widget.userEntity,);
+          },
+        ),
+        PaginationWidget(
+          currentPage: widget.currentPage,
+          totalPages: widget.totalPages,
+          onPageChanged: widget.onPageChanged
+        ),
+        SizedBox(height: 20,)
+      ],
     );
   }
 }
