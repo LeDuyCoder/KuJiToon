@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
 import 'package:kujitoon/feature/details/bloc/detail_event.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
+import 'dart:html' as html;
 
 class ChapterWidget extends StatelessWidget{
   final List<LastChapterEntity> chapterEntities;
@@ -59,21 +62,24 @@ class ChapterWidget extends StatelessWidget{
               ElevatedButton(
                 onPressed: () {
                   context.read<DetailBloc>().add(IncreaseViewEvent(detailCommicEntity: detailCommicEntity));
+                  context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: chapterEntity.name, slug: detailCommicEntity.slug, indexChapter: currentIndex));
+                  chapterEntity.isRead = true;
 
-                  if(!chapterEntity.isRead){
-                    context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: chapterEntity.name, slug: detailCommicEntity.slug, indexChapter: currentIndex));
-                    chapterEntity.isRead = true;
-                  }
-                  Navigator.pushNamed(
-                    context,
-                    '/read',
-                    arguments: {
-                      'chapters': chapterEntities, // List<ChapterEntity>
-                      'urlChapter': chapterEntity.chapterApiData, // String
-                      'detailComicEntity': detailCommicEntity,
-                      'currentIndexChapter': currentIndex
+                  html.window.sessionStorage['READ_PAYLOAD'] = jsonEncode({
+                    "detailCommicEntity": detailCommicEntity.toJson(),
+                    "chapters": chapterEntities,
+                    "urlChapter": chapterEntity.chapterApiData,
+                    "currentIndex": currentIndex
+                  });
+
+                  final uri = Uri(
+                    path: '/read',
+                    queryParameters: {
+                      'slug': detailCommicEntity.slug,
                     },
                   );
+
+                  Navigator.pushNamed(context, uri.toString());
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: chapterEntity.isRead

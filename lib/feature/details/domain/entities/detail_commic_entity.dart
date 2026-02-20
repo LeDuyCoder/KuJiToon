@@ -41,4 +41,36 @@ class DetailCommicEntity {
   String get title => _title;
   String get slug => _slug;
   int get count => countRead;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'slug': _slug,
+      'title': _title,
+      'description': _description,
+      'urlImage': _urlImage,
+      'status': _status.toJson(),
+      'chapters': _chapters.map((e) => e.toJson()).toList(),
+      'updateAt': _updateAt.toIso8601String(),
+      'tags': _tags.map((e) => e.toJson()).toList(),
+      'countRead': countRead,
+    };
+  }
+
+  factory DetailCommicEntity.fromJson(Map<String, dynamic> json) {
+    return DetailCommicEntity(
+      slug: json['slug'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      urlImage: json['urlImage'] as String,
+      status: StatusEnumX.fromJson(json['status']),
+      chapters: (json['chapters'] as List)
+          .map((e) => LastChapterEntity.fromJson(e))
+          .toList(),
+      updateAt: DateTime.parse(json['updateAt']),
+      tags: (json['tags'] as List)
+          .map((e) => TagEntity.fromJson(e))
+          .toList(),
+      countRead: json['countRead'] as int,
+    );
+  }
 }

@@ -117,57 +117,6 @@ class AppRoutes {
               ..add(FetchHomeDataEvent()),
             child: HomePage(),
           ),
-
-      // ❌ KHÔNG CÓ /detail Ở ĐÂY
-
-      '/read': (context) {
-        final args =
-        ModalRoute
-            .of(context)!
-            .settings
-            .arguments as Map<String, dynamic>;
-
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (_) =>
-              ReadBloc(
-                readUsecase: ReadUsecase(
-                  repository:
-                  ReadRepositoryImpl(resource: ReadDatasource()),
-                ),
-              )
-                ..add(
-                  FeatchDataReadEvent(
-                    listChapters: args['chapters'],
-                    urlChapter: args['urlChapter'],
-                    detailComicEntity: args['detailComicEntity'],
-                    currentIndex: args['currentIndexChapter'],
-                  ),
-                ),
-            ),
-            BlocProvider(
-              create: (_) =>
-              CommentBloc(
-                loadCommentUsecase: LoadCommentUsecase(
-                  repository:
-                  ReadRepositoryImpl(resource: ReadDatasource()),
-                ),
-                sendCommentUsecase: SendCommentUsecase(
-                  repository:
-                  ReadRepositoryImpl(resource: ReadDatasource()),
-                ),
-              )
-                ..add(
-                  LoadCommentEvent(
-                    slug: args['detailComicEntity'].slug,
-                  ),
-                ),
-            ),
-          ],
-          child: const ReadPage(),
-        );
-      },
     };
   }
 
@@ -196,6 +145,51 @@ class AppRoutes {
         ),
       );
     }else{
+      switch(uri.path){
+        case "/read":
+          final params = uri.queryParameters;
+          final slug = params['slug']!;
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) =>
+                    ReadBloc(
+                      readUsecase: ReadUsecase(
+                        repository:
+                        ReadRepositoryImpl(resource: ReadDatasource()),
+                      ),
+                    )
+                      ..add(
+                        FeatchDataReadWebsiteEvent(
+                            keyPageLoad: "READ_PAYLOAD"
+                        ),
+                      ),
+                  ),
+                  BlocProvider(
+                    create: (_) =>
+                    CommentBloc(
+                      loadCommentUsecase: LoadCommentUsecase(
+                        repository:
+                        ReadRepositoryImpl(resource: ReadDatasource()),
+                      ),
+                      sendCommentUsecase: SendCommentUsecase(
+                        repository:
+                        ReadRepositoryImpl(resource: ReadDatasource()),
+                      ),
+                    )
+                      ..add(
+                        LoadCommentEvent(
+                          slug: slug,
+                        ),
+                      ),
+                  ),
+                ],
+                child: ReadPage()
+            )
+          );
+      }
     }
 
     return null;

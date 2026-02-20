@@ -16,3 +16,9 @@ class FeatchDataReadEvent extends ReadEvent {
     required this.currentIndex,
   });
 }
+
+class FeatchDataReadWebsiteEvent extends ReadEvent{
+  final String keyPageLoad;
+
+  FeatchDataReadWebsiteEvent({required this.keyPageLoad});
+}
