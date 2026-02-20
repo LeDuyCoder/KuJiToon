@@ -1,11 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
+import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
+import 'package:kujitoon/feature/details/bloc/detail_event.dart';
+import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
+import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
+import 'package:kujitoon/feature/details/view/cubit/button_cubit.dart';
+import 'package:kujitoon/feature/details/view/cubit/button_state.dart';
 
-class ComicOverviewCardWidget extends StatelessWidget{
+class ComicOverviewCardWidget extends StatefulWidget{
   final String urlImage;
   final String URL_BASE = "https://img.otruyenapi.com/uploads/comics/";
-  const ComicOverviewCardWidget({super.key, required this.urlImage});
+
+  final List<LastChapterEntity> originLastChapters;
+  final DetailCommicEntity detailCommicEntity;
+  const ComicOverviewCardWidget({super.key, required this.urlImage, required this.originLastChapters, required this.detailCommicEntity});
+
+  @override
+  State<StatefulWidget> createState() => _ComicOverviewCardWidget();
+
+}
+
+class _ComicOverviewCardWidget extends State<ComicOverviewCardWidget>{
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ButtonCubit>().checkReadStatus(widget.detailCommicEntity.slug);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +56,7 @@ class ComicOverviewCardWidget extends StatelessWidget{
             ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: Image.network(
-                "${URL_BASE}${urlImage}",
+                "${widget.URL_BASE}${widget.urlImage}",
                 width: 120,
                 height: 170,
                 fit: BoxFit.cover,
@@ -47,41 +70,61 @@ class ComicOverviewCardWidget extends StatelessWidget{
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.play_arrow_rounded, size: 22),
-                      label: const Text(
-                        'Đọc ngay',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                  BlocBuilder<ButtonCubit, ButtonState>(
+                    builder: (BuildContext context, ButtonState state) {
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 44,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            context.read<ButtonCubit>().readComic(context, widget.originLastChapters, widget.detailCommicEntity);
+                            context.read<DetailBloc>().add(IncreaseViewEvent(detailCommicEntity: widget.detailCommicEntity));
+
+                            if(state is ContinuteButtonState){
+                              if(!widget.originLastChapters.elementAt(state.indexChapter).isRead){
+                                context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(state.indexChapter).name, slug: widget.detailCommicEntity.slug, indexChapter: state.indexChapter));
+                                widget.originLastChapters.elementAt(state.indexChapter).isRead = true;
+                              }
+                            }else{
+                              if(!widget.originLastChapters.elementAt(0).isRead){
+                                context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: widget.originLastChapters.elementAt(0).name, slug: widget.detailCommicEntity.slug, indexChapter: 0));
+                                widget.originLastChapters.elementAt(0).isRead = true;
+                              }
+                            }
+                          },
+                          icon: const Icon(Icons.play_arrow_rounded, size: 22),
+                          label: Text(
+                            state is StartReadButtonState ? "Đọc Từ Đầu" : "Đọc Tiếp",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 1,
+                          ),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        elevation: 1,
-                      ),
-                    ),
+                      );
+                    },
                   ),
 
-                  const SizedBox(height: 12),
 
+                  const SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
                     height: 44,
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+
+                      },
                       icon: const Icon(Icons.bookmark_border_rounded, size: 20),
-                      label: const Text(
-                        'Theo dõi',
-                        style: TextStyle(
+                      label: Text("Theo Dỗi",
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -94,7 +137,7 @@ class ComicOverviewCardWidget extends StatelessWidget{
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

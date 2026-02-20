@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kujitoon/core/routes/router.dart';
 import 'package:kujitoon/core/utils/app_snackbar.dart';
-import 'package:kujitoon/router.dart';
 
 class DispathController {
   DispathController._privateConstructor();
@@ -31,7 +31,8 @@ class DispathController {
         title: 'KuJiToon',
         theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
         initialRoute: page,
-        routes: routes
+        routes: AppRoutes.routes,
+        onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }
 }

@@ -11,7 +11,7 @@ class DetailCommicEntity {
   final List<LastChapterEntity> _chapters;
   final DateTime _updateAt;
   final List<TagEntity> _tags;
-  final int _countRead;
+  int countRead;
 
   DetailCommicEntity({
     required String slug,
@@ -22,7 +22,7 @@ class DetailCommicEntity {
     required List<LastChapterEntity> chapters,
     required DateTime updateAt,
     required List<TagEntity> tags,
-    required int countRead,
+    required this.countRead,
   }) : _slug = slug,
         _title = title,
         _description = description,
@@ -30,8 +30,7 @@ class DetailCommicEntity {
         _status = status,
         _chapters = chapters,
         _updateAt = updateAt,
-        _tags = tags,
-        _countRead = countRead;
+        _tags = tags;
 
   List<TagEntity> get tags => _tags;
   DateTime get updateAt => _updateAt;
@@ -41,5 +40,5 @@ class DetailCommicEntity {
   String get description => _description;
   String get title => _title;
   String get slug => _slug;
-  int get count => _countRead;
+  int get count => countRead;
 }

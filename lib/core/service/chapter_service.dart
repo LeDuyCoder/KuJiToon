@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kujitoon/core/model/chapter_dto.dart';
 import 'package:kujitoon/core/service/base_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:kujitoon/core/utils/number_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChapterService implements BaseService<ChapterDto?, String> {
 
@@ -39,5 +43,4 @@ class ChapterService implements BaseService<ChapterDto?, String> {
 
     return chapterDto;
   }
-
 }

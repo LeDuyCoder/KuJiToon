@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
-import 'package:kujitoon/router.dart';
+import 'package:kujitoon/core/routes/router.dart';
 
 class FormWidget extends StatefulWidget{
 
@@ -198,7 +198,7 @@ class _FormWidget extends State<FormWidget>{
                     context,
                     FadeRoute(
                       settings: const RouteSettings(name: '/register'),
-                      builder: routes['/register']!, // 👈 lấy đúng route đã khai báo
+                      builder: AppRoutes.routes['/register']!, // 👈 lấy đúng route đã khai báo
                     ),
                   );
                 },

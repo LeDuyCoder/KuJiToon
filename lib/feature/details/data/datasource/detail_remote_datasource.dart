@@ -3,9 +3,7 @@ import 'package:kujitoon/core/service/detail_commic_service.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/tag_entity.dart';
-
-class DetailDatasource {
-
+class DetailRemoteDatasource {
   Future<DetailCommicEntity?> featchData(String slug) async {
     DetailCommicService service = DetailCommicService();
     DetailCommicDto? detailCommicDto = await service.call(slug);

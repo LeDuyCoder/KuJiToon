@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/routes/fade_route.dart';
-import 'package:kujitoon/core/user/user_provider.dart';
-import 'package:kujitoon/core/utils/app_snackbar.dart';
+import 'package:kujitoon/core/routes/router.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/core/utils/web_toast.dart';
 import 'package:kujitoon/feature/auth/bloc/auth_bloc.dart';
 import 'package:kujitoon/feature/auth/view/web/widget/form_widget.dart';
 import 'package:kujitoon/feature/auth/view/web/widget/header_widget.dart';
-import 'package:kujitoon/router.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -44,13 +41,11 @@ class _LoginPage extends State<LoginPage> {
           if(state is AuthSucessed) {
             WebToast.showSuccess("Đăng nhập thành công");
 
-            context.read<UserProvider>().loadUser(state.user.uid);
-
             Navigator.pushReplacement(
               context,
               FadeRoute(
                 settings: const RouteSettings(name: '/home'),
-                builder: routes['/home']!, // 👈 lấy đúng route đã khai báo
+                builder: AppRoutes.routes['/home']!, // 👈 lấy đúng route đã khai báo
               ),
             );
 
@@ -115,7 +110,7 @@ class _LoginPage extends State<LoginPage> {
                       )
                           : Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: boxWidth,
                             height: 250,
                             child: HeaderWidget(borderRadiusGeometry: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),),
