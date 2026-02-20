@@ -1,12 +1,12 @@
-# 📖 KuJiTool – Ứng dụng đọc truyện tranh
+# 📖 KuJiToon – Ứng dụng đọc truyện tranh
 
-KuJiTool là một ứng dụng **đọc truyện tranh online** được xây dựng bằng **Flutter**, hỗ trợ đa nền tảng (Web / Mobile), tập trung vào trải nghiệm đọc mượt mà, quản lý tiến trình đọc và tương tác người dùng.
+KuJiToon là một ứng dụng **đọc truyện tranh online** được xây dựng bằng **Flutter**, hỗ trợ đa nền tảng (Web / Mobile), tập trung vào trải nghiệm đọc mượt mà, quản lý tiến trình đọc và tương tác người dùng.
 
 ---
 
 ## 🚀 Tính năng chính
 
-- 📚 Đọc truyện tranh KuJiTool
+- 📚 Đọc truyện tranh KuJiToon
 - 🌐 Sử dụng **API bên thứ 3** để lấy dữ liệu truyện, chapter, hình ảnh
 - 🔐 Quản lý người dùng với **Firebase**
 - 💬 Hệ thống **comment** cho từng truyện / chapter
