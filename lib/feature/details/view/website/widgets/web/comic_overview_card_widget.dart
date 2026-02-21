@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
@@ -8,6 +7,8 @@ import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.da
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
 import 'package:kujitoon/feature/details/view/cubit/button_cubit.dart';
 import 'package:kujitoon/feature/details/view/cubit/button_state.dart';
+import 'package:kujitoon/feature/details/view/cubit/follow_button_cubit.dart';
+import 'package:kujitoon/feature/details/view/website/widgets/web/follow_button_widget.dart';
 
 class ComicOverviewCardWidget extends StatefulWidget{
 
@@ -96,32 +97,15 @@ class _ComicOverviewCardWidget extends State<ComicOverviewCardWidget>{
               );
             },
           ),
+          SizedBox(height: 10,),
 
+          BlocProvider(
+            create: (_) => FollowButtonCubit(),
+            child: FollowButtonWidget(detailCommicEntity: widget.detailCommicEntity),
+          ),
 
           const SizedBox(height: 10),
 
-          SizedBox(
-            width: 180,
-            height: 44,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                context.read<ButtonCubit>().readComic(context, widget.originLastChapters, widget.detailCommicEntity);
-              },
-              icon: const Icon(Icons.bookmark_border, size: 20),
-              label: Text(
-                "Theo Dỗi",
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFEDEDED),
-                foregroundColor: Colors.black87,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                elevation: 0,
-              ),
-            ),
-          ),
         ],
       ),
     );

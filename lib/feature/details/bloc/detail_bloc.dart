@@ -33,7 +33,6 @@ class DetailBloc extends Bloc<DetailEvent, DetailState>{
   }
 
   Future<void> _onIncreaseView(IncreaseViewEvent event, Emitter emit) async {
-    print("error cc");
     await detailCommicUsecase.inscreaseView(event.detailCommicEntity.slug, event.detailCommicEntity.countRead++);
     emit(LoadedDetailState(detailCommicEntity: event.detailCommicEntity));
   }
