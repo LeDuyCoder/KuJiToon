@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/footer_widget.dart';
-import 'package:kujitoon/feature/read/bloc/comment_bloc.dart';
-import 'package:kujitoon/feature/read/bloc/comment_event.dart';
-import 'package:kujitoon/feature/read/bloc/comment_state.dart';
 import 'package:kujitoon/feature/read/bloc/read_bloc.dart';
 import 'package:kujitoon/feature/read/bloc/read_event.dart';
 import 'package:kujitoon/feature/read/domain/entities/chapter_infomation_entity.dart';

@@ -8,6 +8,8 @@ import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.da
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
 import 'package:kujitoon/feature/details/view/cubit/button_cubit.dart';
 import 'package:kujitoon/feature/details/view/cubit/button_state.dart';
+import 'package:kujitoon/feature/details/view/cubit/follow_button_cubit.dart';
+import 'package:kujitoon/feature/details/view/website/widgets/mobile/follow_button_widget.dart';
 
 class ComicOverviewCardWidget extends StatefulWidget{
   final String urlImage;
@@ -111,28 +113,9 @@ class _ComicOverviewCardWidget extends State<ComicOverviewCardWidget>{
 
 
                   const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44,
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-
-                      },
-                      icon: const Icon(Icons.bookmark_border_rounded, size: 20),
-                      label: Text("Theo Dỗi",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black87,
-                        side: const BorderSide(color: Color(0xFFDDDDDD)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
+                  BlocProvider(
+                    create: (_) => FollowButtonCubit(),
+                    child: FollowButtonWidget(detailCommicEntity: widget.detailCommicEntity),
                   )
                 ],
               ),

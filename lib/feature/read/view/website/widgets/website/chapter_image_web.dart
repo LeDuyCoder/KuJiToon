@@ -7,6 +7,15 @@ import 'dart:ui_web' as ui;
 import 'package:flutter/material.dart';
 import 'package:kujitoon/feature/loading/view/widgets/loading_widget.dart';
 
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html' as html;
+
+// ignore: undefined_prefixed_name
+import 'dart:ui_web' as ui;
+
+import 'package:flutter/material.dart';
+import 'package:kujitoon/feature/loading/view/widgets/loading_widget.dart';
+
 class ChapterImageWeb extends StatefulWidget {
   final String imageUrl;
 
@@ -18,35 +27,44 @@ class ChapterImageWeb extends StatefulWidget {
 
 class _ChapterImageWebState extends State<ChapterImageWeb> {
   double? _aspectRatio;
-  html.ImageElement? _img;
+  late final String _viewType;
 
   @override
   void initState() {
     super.initState();
 
-    _img = html.ImageElement(src: widget.imageUrl);
+    _viewType = 'html-img-${widget.imageUrl.hashCode}';
 
-    _img!.onLoad.listen((_) {
+    // preload để lấy kích thước thật
+    final probe = html.ImageElement(src: widget.imageUrl);
+
+    probe.onLoad.listen((_) {
       if (!mounted) return;
       setState(() {
-        _aspectRatio =
-            _img!.naturalHeight / _img!.naturalWidth;
+        _aspectRatio = probe.naturalHeight / probe.naturalWidth;
       });
     });
 
-    _img!.onError.listen((_) {
+    probe.onError.listen((_) {
       if (!mounted) return;
       setState(() {
-        _aspectRatio = 1;
+        _aspectRatio = 1; // fallback
       });
     });
-  }
 
-  @override
-  void dispose() {
-    _img?.src = '';
-    _img = null;
-    super.dispose();
+    ui.platformViewRegistry.registerViewFactory(
+      _viewType,
+          (int viewId) {
+        final img = html.ImageElement()
+          ..src = widget.imageUrl
+          ..style.width = '100%'
+          ..style.height = 'auto'
+          ..style.display = 'block';
+
+        img.setAttribute('loading', 'lazy');
+        return img;
+      },
+    );
   }
 
   @override
@@ -54,35 +72,11 @@ class _ChapterImageWebState extends State<ChapterImageWeb> {
     if (_aspectRatio == null) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 20),
-        child: Center(child: LoadingWidget(imageAsset: "assets/img/mascot/pic2.png")),
+        child: Center(
+          child: LoadingWidget(imageAsset: "assets/img/mascot/pic2.png"),
+        ),
       );
     }
-
-    final viewType = 'html-img-${widget.imageUrl.hashCode}';
-
-    ui.platformViewRegistry.registerViewFactory(
-      viewType,
-          (int viewId) {
-        final wrapper = html.DivElement()
-          ..style.margin = '0'
-          ..style.padding = '0'
-          ..style.border = '0'
-          ..style.lineHeight = '0'
-          ..style.display = 'block';
-
-        final img = html.ImageElement()
-          ..src = widget.imageUrl
-          ..style.display = 'block'
-          ..style.width = '100%'
-          ..style.height = 'auto'
-          ..style.margin = '0'
-          ..style.padding = '0'
-          ..style.border = '0';
-
-        wrapper.append(img);
-        return wrapper;
-      },
-    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -91,8 +85,8 @@ class _ChapterImageWebState extends State<ChapterImageWeb> {
 
         return SizedBox(
           width: width,
-          height: height,
-          child: HtmlElementView(viewType: viewType),
+          height: height, // 🔥 CỰC KỲ QUAN TRỌNG
+          child: HtmlElementView(viewType: _viewType),
         );
       },
     );
