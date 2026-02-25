@@ -9,6 +9,9 @@ import 'package:kujitoon/feature/read/domain/entities/chapter_infomation_entity.
 import 'package:kujitoon/feature/read/domain/usecase/read_usecase.dart';
 import 'dart:html' as html;
 
+import 'package:kujitoon/feature/read/public/read_session_payload.dart';
+import 'package:kujitoon/feature/read/public/read_session_storage.dart';
+
 class ReadBloc extends Bloc<ReadEvent, ReadState> {
   final ReadUsecase readUsecase;
 
@@ -39,13 +42,13 @@ class ReadBloc extends Bloc<ReadEvent, ReadState> {
   Future<void> _onLoadWebsite(FeatchDataReadWebsiteEvent event, Emitter emit) async {
     emit(LoaingReadState());
     try{
-      Map<String, dynamic> data = jsonDecode(html.window.sessionStorage[event.keyPageLoad]??"");
-      final DetailCommicEntity detailCommicEntity = DetailCommicEntity.fromJson(data["detailCommicEntity"]);
-      final listChapters = (data['chapters'] as List)
+      ReadSessionPayload payload = ReadSessionStorage.load()!;
+      final DetailCommicEntity detailCommicEntity = DetailCommicEntity.fromJson(payload.detailComic);
+      final listChapters = (payload.chapters as List)
           .map((e) => LastChapterEntity.fromJson(e))
           .toList();
-      final String urlChapter = data["urlChapter"];
-      final int currentIndex = data["currentIndex"];
+      final String urlChapter = payload.urlChapter;
+      final int currentIndex = payload.currentIndex;
       ChapterInfomationEntity? chapter = await readUsecase.featchData(
           detailCommicEntity,
           listChapters,

@@ -31,6 +31,7 @@ import 'package:kujitoon/feature/read/data/repositories/read_repository_impl.dar
 import 'package:kujitoon/feature/read/domain/usecase/load_comment_usecase.dart';
 import 'package:kujitoon/feature/read/domain/usecase/read_usecase.dart';
 import 'package:kujitoon/feature/read/domain/usecase/send_comment_usecase.dart';
+import 'package:kujitoon/feature/read/public/read_route_input.dart';
 import 'package:kujitoon/feature/read/view/website/pages/read_page.dart';
 
 import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
@@ -147,8 +148,8 @@ class AppRoutes {
     }else{
       switch(uri.path){
         case "/read":
-          final params = uri.queryParameters;
-          final slug = params['slug']!;
+          final input = ReadRouteInput.fromUri(uri);
+          final slug = input.slug;
           return MaterialPageRoute(
             settings: settings,
             builder: (_) => MultiBlocProvider(
