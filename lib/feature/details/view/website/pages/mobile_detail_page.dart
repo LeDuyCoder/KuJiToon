@@ -112,5 +112,4 @@ class _MobileDetailPage extends State<MobileDetailPage>{
       ),
     );
   }
-
 }

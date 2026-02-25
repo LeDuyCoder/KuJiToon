@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kujitoon/feature/follow/view/website/page/web/follow_comic_web_widget.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
 import 'package:kujitoon/feature/home/view/website/pages/home_page.dart';
 import 'package:kujitoon/feature/home/view/website/pages/mobile_main_page.dart';
@@ -26,19 +27,11 @@ class _MobileHomePage extends State<MobileHomePage> {
       height: _hight,
       child: Stack(
         children: [
-          MainPage(state: widget.state),
-          Column(
-            children: [
-              HeaderWidget(
-                isOpeneMenu: widget.isOpenMenu,
-                openMenu: (opened) {
-                  setState(() {
-                    widget.isOpenMenu = opened;
-                  });
-                },
-              ),
-            ],
-          ),
+          if(HomePage.PAGE == "HOME")
+            MainPage(state: widget.state),
+          if(HomePage.PAGE == "FOLLOW")
+            FollowComicWebWidget(userEntity: widget.state.dataEntity.userEntity,),
+          HeaderWidget()
         ],
       ),
     );

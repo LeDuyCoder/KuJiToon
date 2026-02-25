@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
+import 'package:kujitoon/feature/home/view/website/pages/home_page.dart';
 import 'package:kujitoon/feature/shared_header/domain/entities/user_entity.dart';
 
 
@@ -66,13 +67,16 @@ class MenuWidget extends StatelessWidget{
                 icon: Icons.home_rounded,
                 title: 'Trang chủ',
                 onTap: (){
-                  Navigator.pushNamed(context, "/home");
+                  HomePage.PAGE = "HOME";
+                  Navigator.pushReplacementNamed(context, "/home");
                 },
               ),
               _menuItem(
                 icon: Icons.bookmark,
                 title: 'Theo Dỗi',
-                onTap: (){},
+                onTap: (){
+
+                },
               ),
               _menuItem(
                 icon: Icons.list,
