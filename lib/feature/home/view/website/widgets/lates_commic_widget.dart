@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
+import 'package:kujitoon/feature/details/public/detail_route_input.dart';
+import 'package:kujitoon/feature/details/public/detail_user_route_params.dart';
 import 'package:kujitoon/feature/home/domain/entities/last_update_commic.dart';
 import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
@@ -16,15 +18,15 @@ class LatesCommicWidget extends StatelessWidget {
     return HoverableWidget(
       onTap: (){
 
-        final uri = Uri(
-          path: '/detail',
-          queryParameters: {
-            'slug': lastUpdateCommic.slug,
-            ...userEntity.toQueryParams(), // 👈 gộp object vào đây
-          },
+        final input = DetailRouteInput(
+          slug: lastUpdateCommic.slug,
+          userParams: DetailUserRouteParams.fromQueryParams(userEntity.toQueryParams()),
         );
 
-        Navigator.pushNamed(context, uri.toString());
+        Navigator.pushNamed(
+          context,
+          input.toUri().toString(),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
