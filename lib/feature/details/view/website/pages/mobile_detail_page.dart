@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
@@ -7,7 +6,7 @@ import 'package:kujitoon/feature/details/view/cubit/button_cubit.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_chapters_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_information_card_widget.dart';
 import 'package:kujitoon/feature/details/view/website/widgets/mobile/comic_overview_card_widget.dart';
-import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
+import 'package:kujitoon/feature/details/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/footer_widget.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/mobile/menu_widget.dart';
 import 'package:kujitoon/feature/shared_header/view/widgets/header_widget.dart';
@@ -103,7 +102,7 @@ class _MobileDetailPage extends State<MobileDetailPage>{
               child: ClipRect(
                 child: MenuWidget(
                   changePage: (String page) {},
-                  userEntity: widget.userEntity,
+                  userEntity: widget.userEntity.toQueryParams(),
                 ),
               ),
             ),

@@ -5,7 +5,7 @@ import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
 import 'package:kujitoon/feature/details/bloc/detail_state.dart';
 import 'package:kujitoon/feature/details/view/website/pages/mobile_detail_page.dart';
 import 'package:kujitoon/feature/details/view/website/pages/web_detail_page.dart';
-import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
+import 'package:kujitoon/feature/details/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/loading/view/widgets/loading_widget.dart';
 
 class DetailPage extends StatelessWidget{

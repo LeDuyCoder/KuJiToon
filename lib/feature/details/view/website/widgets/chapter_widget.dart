@@ -10,7 +10,10 @@ import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
 import 'package:kujitoon/feature/details/bloc/detail_event.dart';
 import 'package:kujitoon/feature/details/domain/entities/detail_commic_entity.dart';
 import 'package:kujitoon/feature/details/domain/entities/last_chapter_entity.dart';
+import 'package:kujitoon/feature/read/public/read_session_payload.dart';
 import 'dart:html' as html;
+
+import 'package:kujitoon/feature/read/public/read_session_storage.dart';
 
 class ChapterWidget extends StatelessWidget{
   final List<LastChapterEntity> chapterEntities;
@@ -65,12 +68,15 @@ class ChapterWidget extends StatelessWidget{
                   context.read<DetailBloc>().add(UpdateChapterReadEvent(chapter: chapterEntity.name, slug: detailCommicEntity.slug, indexChapter: currentIndex));
                   chapterEntity.isRead = true;
 
-                  html.window.sessionStorage['READ_PAYLOAD'] = jsonEncode({
-                    "detailCommicEntity": detailCommicEntity.toJson(),
-                    "chapters": chapterEntities,
-                    "urlChapter": chapterEntity.chapterApiData,
-                    "currentIndex": currentIndex
-                  });
+                  ReadSessionStorage.save(
+                    ReadSessionPayload(
+                      detailComic: detailCommicEntity.toJson(),
+                      chapters: chapterEntities.map((e) => e.toJson()).toList(),
+                      urlChapter: chapterEntity.chapterApiData,
+                      currentIndex: currentIndex,
+                    ),
+                  );
+
 
                   final uri = Uri(
                     path: '/read',
