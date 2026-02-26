@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
+import 'package:kujitoon/feature/details/public/detail_route_input.dart';
+import 'package:kujitoon/feature/details/public/detail_user_route_params.dart';
 import 'package:kujitoon/feature/home/domain/entities/prominent_commic.dart';
 import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
@@ -16,15 +18,15 @@ class ProminentCommicWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     return HoverableWidget(
       onTap: (){
-        final uri = Uri(
-          path: '/detail',
-          queryParameters: {
-            'slug': prominentCommic.slug,
-            ...userEntity.toQueryParams(), // 👈 gộp object vào đây
-          },
+        final input = DetailRouteInput(
+          slug: prominentCommic.slug,
+          userParams: DetailUserRouteParams.fromQueryParams(userEntity.toQueryParams()),
         );
 
-        Navigator.pushNamed(context, uri.toString());
+        Navigator.pushNamed(
+          context,
+          input.toUri().toString(),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),

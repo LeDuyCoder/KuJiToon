@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
-import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
+import 'package:kujitoon/feature/details/domain/entities/user_entity.dart';
 
 class MenuWidget extends StatelessWidget{
   final void Function(String page) changePage;
-  final UserEntity userEntity;
+  final Map<String, String> userEntity;
+  final UserEntity user;
 
-  const MenuWidget({super.key, required this.changePage, required this.userEntity});
+  MenuWidget({super.key, required this.changePage, required this.userEntity}):
+        user = UserEntity.fromQueryParams(userEntity);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class MenuWidget extends StatelessWidget{
                     ),
                   ),
                   Text(
-                    userEntity.name,
+                    user.name,
                     style: TextStyle(
                       color: AppColors.white,
                       fontSize: 16,
