@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kujitoon/core/theme/app_colors.dart';
 import 'package:kujitoon/core/utils/responsive.dart';
+import 'package:kujitoon/feature/follow/view/website/page/web/follow_comic_web_widget.dart';
 import 'package:kujitoon/feature/home/bloc/home_state.dart';
 import 'package:kujitoon/feature/home/view/website/pages/home_page.dart';
 import 'package:kujitoon/feature/home/view/website/pages/web_main_page.dart';
@@ -79,7 +80,9 @@ class _WebHomePage extends State<WebHomePage>{
                             });
                           }),
                           if(HomePage.PAGE == "HOME")
-                            MainPage(context: context, state: widget.state)
+                            MainPage(context: context, state: widget.state),
+                          if(HomePage.PAGE == "FOLLOW")
+                            FollowComicWebWidget(userEntity: widget.state.dataEntity.userEntity,),
                         ],
                       ),
                     ),
