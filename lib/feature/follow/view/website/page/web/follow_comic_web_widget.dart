@@ -5,16 +5,18 @@ import 'package:kujitoon/feature/follow/bloc/follow_comic_bloc.dart';
 import 'package:kujitoon/feature/follow/bloc/follow_comic_event.dart';
 import 'package:kujitoon/feature/follow/bloc/follow_comic_state.dart';
 import 'package:kujitoon/feature/follow/data/datasource/follow_comic_firebase_datasource.dart';
+import 'package:kujitoon/feature/follow/data/datasource/follow_comic_local_datasource.dart';
 import 'package:kujitoon/feature/follow/data/datasource/follow_comic_remote_datasource.dart';
 import 'package:kujitoon/feature/follow/data/repositories/follow_comic_repository_impl.dart';
+import 'package:kujitoon/feature/follow/domain/usecase/follow_comic_usecase.dart';
 import 'package:kujitoon/feature/follow/domain/usecase/get_follow_comic_page_usecase.dart';
-import 'package:kujitoon/feature/follow/view/website/widget/web/detail_comic_widget.dart';
-import 'package:kujitoon/feature/follow/view/website/widget/web/no_follow_widget.dart';
+import 'package:kujitoon/feature/follow/view/website/widget/detail_comic_widget.dart';
+import 'package:kujitoon/feature/follow/view/website/widget/no_follow_widget.dart';
 import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/pagination_widget.dart';
 import 'package:kujitoon/feature/loading/view/widgets/loading_widget.dart';
 
-class FollowComicWebWidget extends StatefulWidget{
+class FollowComicWebWidget extends StatefulWidget {
   final UserEntity userEntity;
 
   int page = 1;
@@ -25,21 +27,29 @@ class FollowComicWebWidget extends StatefulWidget{
   State<StatefulWidget> createState() => _FollowComicWebWidget();
 }
 
-class _FollowComicWebWidget extends State<FollowComicWebWidget>{
+class _FollowComicWebWidget extends State<FollowComicWebWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => FollowComicBloc(
-          getFollowComicPageUsecase: GetFollowComicPageUsecase(
-            repository: FollowComicRepositoryImpl(
-                followComicFirebaseDatasource: FollowComicFirebaseDatasource(),
-                followComicRemoteDatasource: FollowComicRemoteDatasource()
-            )
-          )
-      )..add(FeatchFollowComicByPageEvent(widget.page-1)),
+        getFollowComicPageUsecase: GetFollowComicPageUsecase(
+          repository: FollowComicRepositoryImpl(
+            followComicFirebaseDatasource: FollowComicFirebaseDatasource(),
+            followComicRemoteDatasource: FollowComicRemoteDatasource(),
+            followComicLocalDatasource: FollowComicLocalDatasource(),
+          ),
+        ),
+        followComicUsecase: FollowComicUsecase(
+          repository: FollowComicRepositoryImpl(
+            followComicFirebaseDatasource: FollowComicFirebaseDatasource(),
+            followComicRemoteDatasource: FollowComicRemoteDatasource(),
+            followComicLocalDatasource: FollowComicLocalDatasource(),
+          ),
+        ),
+      )..add(FeatchFollowComicByPageEvent(widget.page - 1)),
       child: BlocBuilder<FollowComicBloc, FollowComicState>(
-        builder: (context, state){
-          if(state is LoadingFollowComicState){
+        builder: (context, state) {
+          if (state is LoadingFollowComicState) {
             return Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -50,8 +60,7 @@ class _FollowComicWebWidget extends State<FollowComicWebWidget>{
             );
           }
 
-          if(state is LoadedFollowComicState){
-            print(widget.page);
+          if (state is LoadedFollowComicState) {
             return Expanded(
               child: Container(
                 margin: const EdgeInsets.only(left: 20),
@@ -59,10 +68,7 @@ class _FollowComicWebWidget extends State<FollowComicWebWidget>{
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade400,
-                      blurRadius: 10,
-                    )
+                    BoxShadow(color: Colors.grey.shade400, blurRadius: 10),
                   ],
                 ),
                 child: Column(
@@ -91,34 +97,38 @@ class _FollowComicWebWidget extends State<FollowComicWebWidget>{
                             child: DetailComicCard(
                               detailCommicEntity: comic,
                               userEntity: widget.userEntity,
+                              loadedFollowComicState: state,
                             ),
                           );
                         }).toList(),
                       ),
                     ),
 
-                    PaginationWidget(currentPage: widget.page, totalPages: (state.totalComics / 5).ceil(), onPageChanged: (int value) {
-                      context.read<FollowComicBloc>().add(FeatchFollowComicByPageEvent(value-1));
-                      setState(() {
-                        widget.page = value;
-                      });
-                    },)
+                    PaginationWidget(
+                      currentPage: widget.page,
+                      totalPages: (state.totalComics / 5).ceil(),
+                      onPageChanged: (int value) {
+                        context.read<FollowComicBloc>().add(
+                          FeatchFollowComicByPageEvent(value - 1),
+                        );
+                        setState(() {
+                          widget.page = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),
             );
           }
 
-          if(state is EmptyFollowComicState){
+          if (state is EmptyFollowComicState) {
             return NoFollowWidget();
           }
 
-          return Center(
-            child: Text(state.toString()),
-          );
+          return Center(child: Text(state.toString()));
         },
-      )
+      ),
     );
   }
 }
-

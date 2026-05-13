@@ -75,7 +75,8 @@ class MenuWidget extends StatelessWidget{
                 icon: Icons.bookmark,
                 title: 'Theo Dỗi',
                 onTap: (){
-
+                  HomePage.PAGE = "FOLLOW";
+                  Navigator.pushReplacementNamed(context, "/home");
                 },
               ),
               _menuItem(

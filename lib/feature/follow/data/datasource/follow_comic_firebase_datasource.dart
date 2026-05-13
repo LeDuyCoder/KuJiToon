@@ -46,4 +46,34 @@ class FollowComicFirebaseDatasource {
     return slugs;
   }
 
+  Future<void> updateChapter(String slug, String chapter) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore.collection("data")
+        .doc("users")
+        .collection("commic")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection(slug)
+        .doc(chapter).set({});
+  }
+
+  Future<void> inscreaseView(String slug, int amountCurrentView) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore.collection('data')
+        .doc('commics')
+        .collection(slug)
+        .doc("statistics").set({"amount": ++amountCurrentView});
+  }
+
+  Future<void> removeFollowComic(String slug) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    await firestore.collection("data")
+        .doc("users")
+        .collection("follows")
+        .doc(userId)
+        .collection("data")
+        .doc(slug)
+        .delete();
+  }
 }

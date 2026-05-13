@@ -2,22 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kujitoon/core/utils/time_ago.dart';
-import 'package:kujitoon/feature/details/bloc/detail_bloc.dart';
-import 'package:kujitoon/feature/details/bloc/detail_event.dart';
+import 'package:kujitoon/feature/details/public/detail_route_input.dart';
+import 'package:kujitoon/feature/details/public/detail_user_route_params.dart';
+import 'package:kujitoon/feature/follow/bloc/follow_comic_bloc.dart';
+import 'package:kujitoon/feature/follow/bloc/follow_comic_event.dart';
+import 'package:kujitoon/feature/follow/bloc/follow_comic_state.dart';
 import 'package:kujitoon/feature/follow/domain/entities/detail_commic_entity.dart';
-import 'package:kujitoon/feature/follow/view/website/widget/web/chapter_item.dart';
+import 'package:kujitoon/feature/follow/view/website/widget/chapter_item.dart';
 import 'package:kujitoon/feature/home/domain/entities/user_entity.dart';
 import 'package:kujitoon/feature/home/view/website/widgets/hoverable_widget.dart';
+import 'package:kujitoon/feature/read/public/read_session_payload.dart';
+import 'package:kujitoon/feature/read/public/read_session_storage.dart';
 
 class DetailComicCard extends StatelessWidget {
   final DetailCommicEntity detailCommicEntity;
   final UserEntity userEntity;
+  final LoadedFollowComicState loadedFollowComicState;
 
   final URL_BASE = "https://img.otruyenapi.com/uploads/comics/";
 
   const DetailComicCard({
     super.key,
-    required this.detailCommicEntity, required this.userEntity,
+    required this.detailCommicEntity, required this.userEntity, required this.loadedFollowComicState,
   });
 
   DateTime getCreatedDateFromObjectId(String objectId) {
@@ -101,7 +107,9 @@ class DetailComicCard extends StatelessWidget {
                   Text("Bỏ Theo Dõi", style: TextStyle(color: Colors.red, fontSize: 12),)
                 ],
               ),
-              onTap: (){},
+              onTap: (){
+                context.read<FollowComicBloc>().add(RemoveFollowComicEvent(detailCommicEntity.slug));
+              },
             ),
             
             const SizedBox(height: 8,),
@@ -124,22 +132,45 @@ class DetailComicCard extends StatelessWidget {
                 title: detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].name,
                 time: TimeAgo.time(getCreatedDateFromObjectId(detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].chapterApiData.split("chapter/")[1])),
                 isRead: detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].isRead,
-                onTap: (){},
+                onTap: (){
+                  context.read<FollowComicBloc>().add(IncreaseViewEvent(detailCommicEntity, oldLoadedFollowComicState: loadedFollowComicState));
+                  context.read<FollowComicBloc>().add(UpdateChapterReadEvent(chapter: detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].name, slug: detailCommicEntity.slug, indexChapter: detailCommicEntity.chapters.length - 1 - i));
+                  detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].isRead = true;
+
+                  ReadSessionStorage.save(
+                    ReadSessionPayload(
+                      detailComic: detailCommicEntity.toJson(),
+                      chapters: detailCommicEntity.chapters.map((e) => e.toJson()).toList(),
+                      urlChapter: detailCommicEntity.chapters[detailCommicEntity.chapters.length - 1 - i].chapterApiData,
+                      currentIndex: detailCommicEntity.chapters.length - 1 - i,
+                    ),
+                  );
+
+                  final uri = Uri(
+                    path: '/read',
+                    queryParameters: {
+                      'slug': detailCommicEntity.slug,
+                    },
+                  );
+
+                  Navigator.pushNamed(context, uri.toString());
+
+                },
               )
             ]
           ],
         ),
       ),
       onTap: (){
-        final uri = Uri(
-          path: '/detail',
-          queryParameters: {
-            'slug': detailCommicEntity.slug,
-            ...userEntity.toQueryParams(), // 👈 gộp object vào đây
-          },
+        final input = DetailRouteInput(
+          slug: detailCommicEntity.slug,
+          userParams: DetailUserRouteParams.fromQueryParams(userEntity.toQueryParams()),
         );
 
-        Navigator.pushNamed(context, uri.toString());
+        Navigator.pushNamed(
+          context,
+          input.toUri().toString(),
+        );
       },
     );
   }
