@@ -30,14 +30,21 @@ class UserEntity {
 
   /// Convert <- query string params
   factory UserEntity.fromQueryParams(Map<String, String> params) {
-    final decoded = QueryCryptoUtil.decode(params['u']!);
+    final encoded = params['u'];
+
+    if (encoded == null || encoded.isEmpty) {
+      throw ArgumentError('Missing user query param "u"');
+    }
+
+    final decoded = QueryCryptoUtil.decode(encoded);
 
     return UserEntity(
-      name: decoded['name'],
-      email: decoded['email'],
-      admin: decoded['admin'],
-      avatar: decoded['avatar'],
-      createdAt: DateTime.parse(decoded['createdAt']),
+      name: decoded['name'] ?? '',
+      email: decoded['email'] ?? '',
+      admin: decoded['admin'] == true || decoded['admin'] == 'true',
+      avatar: decoded['avatar'] ?? '',
+      createdAt: DateTime.tryParse(decoded['createdAt'] ?? '') ??
+          DateTime.fromMillisecondsSinceEpoch(0),
     );
   }
 }

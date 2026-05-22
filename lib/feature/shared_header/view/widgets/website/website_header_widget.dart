@@ -7,8 +7,9 @@ import 'package:kujitoon/feature/shared_header/domain/entities/user_entity.dart'
 
 class WebsiteHeaderWidget extends StatelessWidget {
   final UserEntity userEntity;
+  final String keyword;
 
-  const WebsiteHeaderWidget({super.key, required this.userEntity});
+  const WebsiteHeaderWidget({super.key, required this.userEntity, required this.keyword});
 
   @override
   Widget build(BuildContext context) {
@@ -50,38 +51,48 @@ class WebsiteHeaderWidget extends StatelessWidget {
                 SizedBox(width: 20),
                 Expanded(
                   child: Container(
-                    width: double.infinity,
-                    height: 35,
+                    height: 40,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 10),
-                        Icon(Icons.search, color: Colors.black54, size: 20),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              hintText: "Tìm kiếm truyện tranh...",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontFamily: "EncodeSans",
-                              ),
-                              border: InputBorder.none,
-                              isDense: true,
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
-                            ),
-                          ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
                         ),
                       ],
+                    ),
+                    child: TextFormField(
+                      autofocus: false,
+                      cursorColor: Colors.black87,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontFamily: "EncodeSans",
+                      ),
+                      initialValue: keyword,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.black54,
+                          size: 20,
+                        ),
+                        hintText: "Tìm kiếm truyện tranh...",
+                        hintStyle: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontFamily: "EncodeSans",
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 12,
+                        ),
+                      ),
+                      onChanged: (value) {},
+                      onFieldSubmitted: (value) {
+                        Navigator.pushNamed(context, '/search?keyword=$value&page=1');
+                      },
                     ),
                   ),
                 ),

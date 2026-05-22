@@ -17,7 +17,7 @@ class DetailRouteInput {
       path: _path,
       queryParameters: {
         'slug': slug,
-        ...userParams.toQueryParams(), // ✅ DTO thuần
+        ...userParams.toQueryParams(),
       },
     );
   }
