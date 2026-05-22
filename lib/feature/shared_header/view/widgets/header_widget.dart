@@ -14,7 +14,9 @@ class HeaderWidget extends StatefulWidget {
   bool isOpeneMenu;
   void Function(bool opened) openMenu;
 
-  HeaderWidget({super.key, this.isOpeneMenu = false, this.openMenu = _emptyCallback,});
+  final String keyword;
+
+  HeaderWidget({super.key, this.isOpeneMenu = false, this.openMenu = _emptyCallback, this.keyword = '',});
 
   @override
   State<StatefulWidget> createState() => _HeaderWidget();
@@ -35,8 +37,8 @@ class _HeaderWidget extends State<HeaderWidget>{
           builder: (context, state){
             if(state is LoadedHeaderState){
               return Responsive.isDesktop(context)
-                  ? WebsiteHeaderWidget(userEntity: state.userEntity)
-                  : MobileHeaderWidget(userEntity: state.userEntity,);
+                  ? WebsiteHeaderWidget(userEntity: state.userEntity, keyword: widget.keyword,)
+                  : MobileHeaderWidget(userEntity: state.userEntity, keyword: widget.keyword,);
             }
 
             return Container();

@@ -36,6 +36,10 @@ import 'package:kujitoon/feature/register/bloc/register_bloc.dart';
 import 'package:kujitoon/feature/register/data/datasources/register_remote_datasource.dart';
 import 'package:kujitoon/feature/register/data/repositories/register_repository_impl.dart';
 import 'package:kujitoon/feature/register/domain/usecases/register_usecase.dart';
+import 'package:kujitoon/feature/search/bloc/search_bloc.dart';
+import 'package:kujitoon/feature/search/bloc/search_event.dart';
+import 'package:kujitoon/feature/search/public/search_route_input.dart';
+import 'package:kujitoon/feature/search/view/website/pages/search_page.dart';
 import 'package:kujitoon/feature/splash/view/splash_screen.dart';
 
 // ignore: library_prefixes
@@ -143,7 +147,8 @@ class AppRoutes {
           child: DetailPage(userEntity: user),
         ),
       );
-    }else{
+    }
+    else{
       switch(uri.path){
         case "/read":
           final input = ReadRouteInput.fromUri(uri);
@@ -187,6 +192,25 @@ class AppRoutes {
                 ],
                 child: ReadPage()
             )
+          );
+        case "/search":
+          final input = SearchRouteInput.fromUri(uri);
+          final keyword = input.key;
+
+          final int page = int.tryParse(input.page ?? '') ?? 1;
+
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider(
+              create: (_) => SearchBloc()
+                ..add(
+                  FeatchDataSearchEvent(
+                    keyword: keyword,
+                    page: page,
+                  ),
+                ),
+              child: SearchPage(),
+            ),
           );
       }
     }

@@ -7,11 +7,12 @@ import 'package:kujitoon/feature/shared_header/view/widgets/menu_widget.dart';
 
 class MobileHeaderWidget extends StatefulWidget {
   bool isOpenMenu = false;
+  final String keyword;
   final UserEntity userEntity;
 
   MobileHeaderWidget({
     super.key,
-    required this.userEntity,
+    required this.userEntity, required this.keyword,
   });
 
   @override
@@ -73,21 +74,36 @@ class _MobileHeaderWidget extends State<MobileHeaderWidget> {
                           SizedBox(width: 10),
                           Expanded(
                             child: TextFormField(
-                              readOnly: true,
+                              autofocus: false,
+                              cursorColor: Colors.black87,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontFamily: "EncodeSans",
+                              ),
+                              initialValue: widget.keyword,
                               decoration: InputDecoration(
                                 hintText: "Tìm kiếm truyện tranh...",
-                                hintStyle: TextStyle(
+                                hintStyle: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
                                   fontFamily: "EncodeSans",
                                 ),
                                 border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(
-                                  vertical: 16,
+
+                                isDense: true, // 👈 QUAN TRỌNG
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12, // 👈 chỉnh vừa chiều cao
+                                  horizontal: 12,
                                 ),
                               ),
-                            ),
+                              onChanged: (value) {},
+                              onFieldSubmitted: (value) {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/search?keyword=$value&page=1',
+                                );
+                              },
+                            )
                           ),
                         ],
                       ),
